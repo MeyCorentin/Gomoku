@@ -6,7 +6,7 @@
 ##
 
 PP = g++
-src = main.cpp
+src = 	main.cpp
 
 NAME = pbrain-gomoku-ai
 OBJ = ${src:.cpp=.o}
