@@ -12,12 +12,12 @@ std::string input;
 
 void readInput(Parser *arg_parser, Bitboard *board_) {
     while (true) {
-        arg_parser->Compute(*board_, input);
         IO_MUTEX.lock();
+        arg_parser->Compute(*board_, input);
         if (input == "exit") {
             IO_MUTEX.unlock();
             break;
-        }   
+        }
         IO_MUTEX.unlock();
     }
 }
@@ -25,7 +25,7 @@ void readInput(Parser *arg_parser, Bitboard *board_) {
 void writeOutput(Brain *arg_brain, Bitboard *board_) {
     while (true) {
         IO_MUTEX.lock();
-        arg_brain->Compute(input);
+        arg_brain->Compute(*board_, input);
         if (input == "exit") {
             IO_MUTEX.unlock();
             break;

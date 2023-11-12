@@ -5,10 +5,9 @@ Brain::Brain() {
 }
 
 
-void Brain::Compute(std::string &arg_input)
+void Brain::Compute(Bitboard &arg_board, std::string &arg_input)
 {
     if (!arg_input.empty()) {
-        std::cout << "You entered: " << arg_input << std::endl;
         arg_input.clear();
     }
 }

@@ -5,5 +5,5 @@
 class Brain {
     public:
         Brain();
-        void Compute(std::string &input);
+        void Compute(Bitboard &arg_board, std::string &input);
 };
