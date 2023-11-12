@@ -1,0 +1,7 @@
+#include "../../includes/parser.hpp"
+
+void Parser::C_start(Bitboard &arg_board, std::string &arg_input)
+{
+    int n = std::stoi(arg_input.substr(6));
+    arg_board.reSize(n);
+}

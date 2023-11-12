@@ -1,5 +1,7 @@
 #include "../includes/parser.hpp"
-
+#include "commandes/start.cpp"
+#include "commandes/turn.cpp"
+#include "commandes/board.cpp"
 Parser::Parser()
 {
 
@@ -8,16 +10,14 @@ Parser::Parser()
 void Parser::Compute(Bitboard &arg_board, std::string &arg_input)
 {
     std::getline(std::cin, arg_input);
+    if (on_board_creation == true || arg_input.substr(0, 5) == "BOARD" || arg_input.substr(0, 4) == "DONE") {
+        C_board(arg_board, arg_input);
+    }
     if (arg_input.substr(0, 4) == "TURN") {
-        std::istringstream iss(arg_input);
-        std::string cmd;
-        int x, y;
-        iss >> cmd >> x >> y;
-        arg_board.play(x, y, 1);
+        C_turn(arg_board, arg_input);
     }
     if (arg_input.substr(0, 5) == "START") {
-        int n = std::stoi(arg_input.substr(6));
-        arg_board.reSize(n);
+        C_start(arg_board, arg_input);
     }
     if (arg_input.substr(0, 8) == "DISPLAY") {
         // arg_board.displayBoard();

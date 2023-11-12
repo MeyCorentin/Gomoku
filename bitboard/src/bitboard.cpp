@@ -76,10 +76,13 @@ void Bitboard::display() {
             temp_size_++;
             uint64_t mask = 1ULL << i;
             uint64_t mask_2 = 1ULL << (i - 1);
-            if (bitboard_[board_count_] & mask & mask_2) {
-                std::cout << "X ";
-            } else if  (bitboard_[board_count_] & mask_2) {
-                std::cout << "O ";
+            if (bitboard_[board_count_] & mask_2)
+            {
+                if (bitboard_[board_count_] & mask) {
+                    std::cout << "X ";
+                } else{
+                    std::cout << "O ";
+                }
             } else {
                 std::cout << ". ";
             }
@@ -103,11 +106,8 @@ void Bitboard::play(int x_position, int y_position, int value) {
             mask_2 = 1ULL << (i - 1);
             if (temp_size == total_position) {
                 bitboard_[board_count] |= mask_2;
-                if (value == 1) {
+                if (value == 1)
                     bitboard_[board_count] |= mask;
-                } else {
-                    bitboard_[board_count] &= ~mask;
-                }
             }
         }
         board_count = (temp_size / 64) + 1;

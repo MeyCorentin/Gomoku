@@ -14,10 +14,6 @@ void readInput(Parser *arg_parser, Bitboard *board_) {
     while (true) {
         IO_MUTEX.lock();
         arg_parser->Compute(*board_, input);
-        if (input == "exit") {
-            IO_MUTEX.unlock();
-            break;
-        }
         IO_MUTEX.unlock();
     }
 }
@@ -26,10 +22,6 @@ void writeOutput(Brain *arg_brain, Bitboard *board_) {
     while (true) {
         IO_MUTEX.lock();
         arg_brain->Compute(*board_, input);
-        if (input == "exit") {
-            IO_MUTEX.unlock();
-            break;
-        }
         IO_MUTEX.unlock();
     }
 }
