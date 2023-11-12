@@ -10,15 +10,25 @@ MinMax::~MinMax()
 
 }
 
-int MinMax::findBestMove(int depth, int nodeIndex, bool isMax, int scores[], int maxDepth)
+node MinMax::findBestMove(int depth, int nodeIndex, bool isMax, std::vector<node> scores, int maxDepth)
 {
     if (depth == maxDepth)
-        return scores[nodeIndex];
+        return scores.at(nodeIndex);
 
     if (isMax) {
-        return std::max(findBestMove(depth + 1, nodeIndex * 2, false, scores, maxDepth), findBestMove(depth + 1, nodeIndex * 2 + 1, false, scores, maxDepth));
+        node node_left = findBestMove(depth + 1, nodeIndex * 2, false, scores, maxDepth);
+        node node_right = findBestMove(depth + 1, nodeIndex * 2 + 1, false, scores, maxDepth);
+        if (node_left.score > node_right.score)
+            return node_left;
+        else
+            return node_right;
     } else {
-        return std::min(findBestMove(depth + 1, nodeIndex * 2, true, scores, maxDepth), findBestMove(depth + 1, nodeIndex * 2 + 1, true, scores, maxDepth));
+        node node_left = findBestMove(depth + 1, nodeIndex * 2, true, scores, maxDepth);
+        node node_right = findBestMove(depth + 1, nodeIndex * 2 + 1, true, scores, maxDepth);
+        if (node_left.score > node_right.score)
+            return node_right;
+        else
+            return node_left;
     }
 }
 
