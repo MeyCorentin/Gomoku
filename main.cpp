@@ -1,6 +1,7 @@
 #include <iostream>
 #include <thread>
 
+#include "min_max/src/MinMax.cpp"
 #include <vector>
 #include <mutex>
 #include "parser/src/parser.cpp"
@@ -27,6 +28,15 @@ void writeOutput(Brain *arg_brain, Bitboard *board_) {
 }
 
 int main() {
+    // MinMax algo;
+
+    // int scores[] = {3, 5, 2, 9, 12, 5, 23, 23};
+    // int size = sizeof(scores)/sizeof(scores[0]);
+    // int maxDepth = algo.getMaxDepth(size);
+    // int result = algo.findBestMove(0, 0, true, scores, maxDepth);
+
+    // std::cout << "Result : " << result << std::endl;
+
     Parser parser_;
     Brain brain_;
     Bitboard& board_ = Bitboard::getInstance();
