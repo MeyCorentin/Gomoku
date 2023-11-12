@@ -6,7 +6,14 @@
 ##
 
 PP = g++
-src = 	main.cpp
+src = 	main.cpp	\
+		bitboard/src/bitboard.cpp	\
+		brain/src/brain.cpp	\
+		min_max/src/MinMax.cpp	\
+		parser/src/parser.cpp	\
+		parser/src/commandes/board.cpp	\
+		parser/src/commandes/start.cpp	\
+		parser/src/commandes/turn.cpp	\
 
 NAME = pbrain-gomoku-ai
 OBJ = ${src:.cpp=.o}

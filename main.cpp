@@ -1,12 +1,11 @@
 #include <iostream>
 #include <thread>
-
-#include "min_max/src/MinMax.cpp"
 #include <vector>
 #include <mutex>
-#include "parser/src/parser.cpp"
-#include "brain/src/brain.cpp"
-#include "bitboard/src/bitboard.cpp"
+
+#include "min_max/includes/MinMax.hpp"
+#include "parser/includes/parser.hpp"
+#include "brain/includes/brain.hpp"
 
 std::mutex IO_MUTEX;
 std::string input;
