@@ -13,7 +13,6 @@ class Bitboard {
 
         void reSize(int arg_size);
 
-
         void displayBoard();
 
         void displayUseBoard();
@@ -24,7 +23,11 @@ class Bitboard {
 
         int getRowSize();
 
-        void play(int x_position, int y_position, int value);
+        void play(std::pair<int,int> position, int value);
+
+        std::pair<int, int> getPosition(int index);
+
+        int getIndex(std::pair<int, int> position);
 
     private:
         std::vector<uint64_t> bitboard_;

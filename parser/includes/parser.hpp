@@ -5,6 +5,7 @@
 #pragma once
 
 #include "../../bitboard/includes/bitboard.hpp"
+#include "../../min_max/includes/MinMax.hpp"
 
 class Parser {
     public:

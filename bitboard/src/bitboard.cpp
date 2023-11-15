@@ -73,10 +73,20 @@ void Bitboard::displayUseBoard() {
     std::cout << std::endl;
 }
 
+std::pair<int, int> Bitboard::getPosition(int index)
+{
+    return std::make_pair((index % row_size_), (index / row_size_));
+}
+
+int Bitboard::getIndex(std::pair<int, int> position)
+{
+    return (position.first + (position.second * row_size_));
+}
 
 void Bitboard::display() {
     int temp_size_ = 0;
     int board_count_ = 0;
+
     for (; temp_size_ < size_;) {
         for (int i = 1; i <= 64; i+=2) {
             if (temp_size_ >= size_)
@@ -84,7 +94,7 @@ void Bitboard::display() {
             if (temp_size_ % row_size_ == 0)
                 std::cout << std::endl;
             temp_size_++;
-            uint64_t mask_2 = 1ULL << (i +   1);
+            uint64_t mask_2 = 1ULL << (i + 1);
             if (bitboard_[board_count_] & mask_2)
             {
                 uint64_t mask = 1ULL << i;
@@ -102,8 +112,8 @@ void Bitboard::display() {
     std::cout << std::endl;
 }
 
-void Bitboard::play(int x_position, int y_position, int value) {
-    int total_position = (((y_position - 1) * row_size_) + x_position);
+void Bitboard::play(std::pair<int,int> position, int value) {
+    int total_position = (((position.second - 1) * row_size_) + position.first);
     int temp_size = 0;
     int board_count = 0;
     uint64_t mask;

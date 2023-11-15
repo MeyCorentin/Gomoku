@@ -3,7 +3,7 @@
 MinMax::MinMax(Bitboard *bitboard)
 {
     _bitboard = bitboard;
-    _scores = {{3, 0, 1}, {5, 0, 2}, {2, 0, 3}, {9, 0, 4}, {12, 0, 5}, {5, 0, 6}, {23, 0, 7}, {23, 0, 8}};
+    _scores = {};
 }
 
 MinMax::~MinMax()
@@ -45,32 +45,37 @@ int MinMax::updateScore(int case_score, int temp_size_, int i)
 
 }
 
+
 void MinMax::getScoreInMap()
 {
+    std::vector<uint64_t> board_ = _bitboard->getBitboard();
     int temp_size_ = 0;
     int board_count_ = 0;
     int case_score = 0;
+    int i;
+
     for (; temp_size_ < _bitboard->getSize();) {
-        for (int i = 1; i < 64; i += 2) {
+        for (int i = 1; i <= 64; i+=2) {
+            temp_size_++;
             if (temp_size_ >= _bitboard->getSize())
                 break;
             if (temp_size_ % _bitboard->getRowSize() == 0)
                 std::cout << std::endl;
-            temp_size_++;
-            uint64_t mask = 1ULL << i;
-            uint64_t mask_2 = 1ULL << (i - 1);
-
-// ---------------------------
-
-            case_score = updateScore(case_score, temp_size_, i);
-            _scores.push_back({case_score, temp_size_, i});
-            case_score = 0;
-
-// ---------------------------
-
+            uint64_t mask_2 = 1ULL << (i + 1);
+            if (board_[board_count_] & mask_2)
+            {
+                uint64_t mask = 1ULL << i;
+                if (board_[board_count_] & mask) {
+                    std::cout << temp_size_  + _bitboard->getRowSize() << std::endl;
+                    std::cout << _bitboard->getPosition(temp_size_ + _bitboard->getRowSize()).first  << std::endl;
+                    std::cout << _bitboard->getPosition(temp_size_ + _bitboard->getRowSize()).second  << std::endl;
+                    std::cout << _bitboard->getIndex(_bitboard->getPosition(temp_size_ + _bitboard->getRowSize())) << std::endl;;
+                }
+            }
         }
-        board_count_ = ((temp_size_ ) / 64) + 1;
+        board_count_++;
     }
+    std::cout << std::endl;
 }
 
 std::pair<int, int> MinMax::nodeToPosition(node my_node)
@@ -82,16 +87,17 @@ std::pair<int, int> MinMax::nodeToPosition(node my_node)
     return result;
 }
 
-void MinMax::playTurn()
+std::pair<int, int> MinMax::playTurn()
 {
-    // getScoreInMap();
-    int size = _scores.size();
-    int maxDepth = getMaxDepth(size);
+    getScoreInMap();
+    // int size = _scores.size();
+    // int maxDepth = getMaxDepth(size);
 
-    node result = findBestMove(0, 0, true, maxDepth);
-    std::pair<int, int> position = nodeToPosition(result);
+    // node result = findBestMove(0, 0, true, maxDepth);
+    // std::pair<int, int> position = nodeToPosition(result);
 
-    std::cout << "Result : " << result.score << std::endl;
+    // std::cout << "Result : " << result.score << std::endl;
 
-    std::cout << "SUGGEST [" << position.first << "] [" << position.second << "]" << std::endl;
+    // std::cout << "SUGGEST [" << position.first << "] [" << position.second << "]" << std::endl;
+    return std::make_pair(0,0);
 }
