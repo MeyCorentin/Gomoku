@@ -29,6 +29,8 @@ class Bitboard {
 
         int getIndex(std::pair<int, int> position);
 
+        int getBitboardColor(int index);
+
     private:
         std::vector<uint64_t> bitboard_;
         int size_;

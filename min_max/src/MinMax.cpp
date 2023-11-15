@@ -38,18 +38,43 @@ int MinMax::getMaxDepth(int size)
     return (size == 1) ? 0 : 1 + getMaxDepth(size / 2);
 }
 
-int MinMax::updateScore(int case_score, int temp_size_, int i)
+int MinMax::recurseScore(int score, std::pair<int, int> position, std::pair<int, int> direction)
 {
-    // if (openEnds == 0 && countConsecutive < 5)
-        
+    if (position.first >= _bitboard->getSize() || position.second >= _bitboard->getSize() || position.first < 0 || position.second < 0)
+        return score;
 
+    position.first += direction.first;
+    position.second += direction.second;
+    score += recurseScore(score, position, direction);
+
+    if (_bitboard->getBitboardColor(_bitboard->getIndex(position)) == 1)
+        score += 1;
+
+    return score;
+}
+
+int MinMax::updateScore(int index) //Todo change direction by value
+{
+    int score = 0;
+    std::pair<int, int> position = _bitboard->getPosition(index);
+
+    score += recurseScore(0, position, std::make_pair(-1,0)); //Left
+    score += recurseScore(0, position, std::make_pair(-1,-1)); //Top Left
+    score += recurseScore(0, position, std::make_pair(0,-1)); //Top
+    score += recurseScore(0, position, std::make_pair(1,-1)); //Top Right
+    score += recurseScore(0, position, std::make_pair(1,0)); //Right
+    score += recurseScore(0, position, std::make_pair(1,1)); //Bottom Right
+    score += recurseScore(0, position, std::make_pair(0,1)); //Bottom
+    score += recurseScore(0, position, std::make_pair(-1,1)); //Bottom Left
+    std::cout << "|" << score << "|";
+    return score;
 }
 
 
 void MinMax::getScoreInMap()
 {
     std::vector<uint64_t> board_ = _bitboard->getBitboard();
-    int temp_size_ = 0;
+    int temp_size_ = -1;
     int board_count_ = 0;
     int case_score = 0;
     int i;
@@ -61,43 +86,29 @@ void MinMax::getScoreInMap()
                 break;
             if (temp_size_ % _bitboard->getRowSize() == 0)
                 std::cout << std::endl;
-            uint64_t mask_2 = 1ULL << (i + 1);
-            if (board_[board_count_] & mask_2)
-            {
-                uint64_t mask = 1ULL << i;
-                if (board_[board_count_] & mask) {
-                    std::cout << temp_size_  + _bitboard->getRowSize() << std::endl;
-                    std::cout << _bitboard->getPosition(temp_size_ + _bitboard->getRowSize()).first  << std::endl;
-                    std::cout << _bitboard->getPosition(temp_size_ + _bitboard->getRowSize()).second  << std::endl;
-                    std::cout << _bitboard->getIndex(_bitboard->getPosition(temp_size_ + _bitboard->getRowSize())) << std::endl;;
-                }
-            }
+            // _bitboard->getBitboardColor(temp_size_  + _bitboard->getRowSize());
+            _scores.push_back(node{updateScore(temp_size_  + _bitboard->getRowSize()), (int)_scores.size() + 1,temp_size_  + _bitboard->getRowSize()});
         }
         board_count_++;
     }
-    std::cout << std::endl;
 }
 
 std::pair<int, int> MinMax::nodeToPosition(node my_node)
 {
-    std::pair<int, int> result;
-
-    result.first = my_node.i_vector; //TODO Change that
-    result.second = my_node.i; //TODO Change that
-    return result;
+    return _bitboard->getPosition(my_node.i_vector);
 }
 
 std::pair<int, int> MinMax::playTurn()
 {
     getScoreInMap();
-    // int size = _scores.size();
-    // int maxDepth = getMaxDepth(size);
+    int size = _scores.size();
+    int maxDepth = getMaxDepth(size);
 
-    // node result = findBestMove(0, 0, true, maxDepth);
-    // std::pair<int, int> position = nodeToPosition(result);
+    node result = findBestMove(0, 0, true, maxDepth);
+    std::pair<int, int> position = nodeToPosition(result);
 
-    // std::cout << "Result : " << result.score << std::endl;
+    std::cout << "Result : " << result.score << std::endl;
 
-    // std::cout << "SUGGEST [" << position.first << "] [" << position.second << "]" << std::endl;
-    return std::make_pair(0,0);
+    std::cout << "SUGGEST [" << position.first << "] [" << position.second << "]" << std::endl;
+    return std::make_pair(position.first, position.second);
 }
