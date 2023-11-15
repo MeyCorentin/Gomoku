@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "../../bitboard/includes/bitboard.hpp"
+
 class Brain {
     public:
         Brain();

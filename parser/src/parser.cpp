@@ -1,7 +1,5 @@
 #include "../includes/parser.hpp"
-#include "commandes/start.cpp"
-#include "commandes/turn.cpp"
-#include "commandes/board.cpp"
+
 Parser::Parser()
 {
 
