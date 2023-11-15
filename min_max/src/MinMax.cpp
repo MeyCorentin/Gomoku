@@ -38,11 +38,42 @@ int MinMax::getMaxDepth(int size)
     return (size == 1) ? 0 : 1 + getMaxDepth(size / 2);
 }
 
-int MinMax::updateScore(int case_score, int temp_size_, int i)
+int MinMax::recurseScore(int score, std::pair<int, int> position, std::pair<int, int> direction)
 {
-    // if (openEnds == 0 && countConsecutive < 5)
-        
+    //Check if not in map
+    if (position.first >= _bitboard->getSize() || position.second >= _bitboard->getSize() || position.first < 0 || position.second < 0)
+        return score;
 
+    //Continue recursion
+    position.first += direction.first;
+    position.second += direction.second;
+    score += recurseScore(score, position, direction);
+
+    //Increase score if same color
+    //Todo position to index
+    int index = ;
+    if (_bitboard->getBitboard())
+        score += 100; //Todo add multiplicateur
+
+    return score;
+}
+
+int MinMax::updateScore(int index) //Todo change direction by value
+{
+    int score = 0;
+
+    //Todo index to position
+    std::pair<int, int> position = ;
+
+    score += recurseScore(0, position, direction); //Left
+    score += recurseScore(0, position, direction); //Top Left
+    score += recurseScore(0, position, direction); //Top
+    score += recurseScore(0, position, direction); //Top Right
+    score += recurseScore(0, position, direction); //Right
+    score += recurseScore(0, position, direction); //Bottom Right
+    score += recurseScore(0, position, direction); //Bottom
+    score += recurseScore(0, position, direction); //Bottom Left
+    return score;
 }
 
 void MinMax::getScoreInMap()
@@ -62,9 +93,9 @@ void MinMax::getScoreInMap()
 
 // ---------------------------
 
-            case_score = updateScore(case_score, temp_size_, i);
-            _scores.push_back({case_score, temp_size_, i});
-            case_score = 0;
+            // case_score = updateScore(case_score, temp_size_, i);
+            // _scores.push_back({case_score, temp_size_, i});
+            // case_score = 0;
 
 // ---------------------------
 

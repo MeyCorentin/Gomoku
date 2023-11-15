@@ -18,7 +18,10 @@ class MinMax {
         ~MinMax();
         node findBestMove(int depth, int nodeIndex, bool isMax, int maxDepth);
         void getScoreInMap();
+
         int updateScore(int case_score, int temp_size_, int i);
+        int recurseScore(int score, std::pair<int, int> position, std::pair<int, int> direction);
+
         void playTurn();
         int getMaxDepth(int size);
         std::pair<int, int> nodeToPosition(node my_node);
