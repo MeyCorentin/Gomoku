@@ -23,6 +23,10 @@ class Bitboard {
 
         void display();
 
+        int getSize();
+
+        int getRowSize();
+
         void play(int x_position, int y_position, int value);
 
     private:

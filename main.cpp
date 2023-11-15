@@ -27,14 +27,6 @@ void writeOutput(Brain *arg_brain, Bitboard *board_) {
 }
 
 int main() {
-    // MinMax algo;
-
-    // int scores[] = {3, 5, 2, 9, 12, 5, 23, 23};
-    // int size = sizeof(scores)/sizeof(scores[0]);
-    // int maxDepth = algo.getMaxDepth(size);
-    // int result = algo.findBestMove(0, 0, true, scores, maxDepth);
-
-    // std::cout << "Result : " << result << std::endl;
 
     Parser parser_;
     Brain brain_;
@@ -45,6 +37,9 @@ int main() {
 
     t1.join();
     t2.join();
+
+    // MinMax algo(&board_);
+    // algo.playTurn();
 
     return 0;
 }
