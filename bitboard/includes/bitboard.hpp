@@ -1,9 +1,6 @@
 #include <vector>
 #include <cstdint>
-<<<<<<< HEAD
 #include <string>
-=======
->>>>>>> 3445f915f06ce1367c0ade49869e3736d28648e7
 #include <iostream>
 
 #pragma once
