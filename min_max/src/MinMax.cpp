@@ -38,7 +38,7 @@ int MinMax::getMaxDepth(int size)
     return (size == 1) ? 0 : 1 + getMaxDepth(size / 2);
 }
 
-void MinMax::updateScore(int countConsecutive, int openEnds)
+int MinMax::updateScore(int case_score, int temp_size_, int i)
 {
     // if (openEnds == 0 && countConsecutive < 5)
         
@@ -47,11 +47,9 @@ void MinMax::updateScore(int countConsecutive, int openEnds)
 
 void MinMax::getScoreInMap()
 {
-    int countConsecutive = 0;
-    int openEnds = 0;
-
     int temp_size_ = 0;
     int board_count_ = 0;
+    int case_score = 0;
     for (; temp_size_ < _bitboard->getSize();) {
         for (int i = 1; i < 64; i += 2) {
             if (temp_size_ >= _bitboard->getSize())
@@ -64,33 +62,15 @@ void MinMax::getScoreInMap()
 
 // ---------------------------
 
-            if ((_bitboard->getBitboard()[board_count_] & mask_2) && (_bitboard->getBitboard()[board_count_] & mask)) { //Is not empty && black
-                countConsecutive++;
-            } else if (!(_bitboard->getBitboard()[board_count_] & mask_2) && countConsecutive > 0) {
-                openEnds++;
-                updateScore(countConsecutive, openEnds); //Edit score
-                countConsecutive = 0;
-                openEnds = 1;
-            } else if (!(_bitboard->getBitboard()[board_count_] & mask_2)) {
-                openEnds = 1;
-            } else if (countConsecutive > 0) {
-                updateScore(countConsecutive, openEnds); //Edit score
-                countConsecutive = 0;
-                openEnds = 0;
-            } else {
-                openEnds = 0;
-            }
+            case_score = updateScore(case_score, temp_size_, i);
+            _scores.push_back({case_score, temp_size_, i});
+            case_score = 0;
 
 // ---------------------------
 
         }
         board_count_ = ((temp_size_ ) / 64) + 1;
     }
-    if (countConsecutive > 0) {
-        updateScore(countConsecutive, openEnds);
-    }
-    countConsecutive = 0;
-    openEnds = 0;
 }
 
 std::pair<int, int> MinMax::nodeToPosition(node my_node)

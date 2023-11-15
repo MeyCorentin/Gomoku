@@ -28,18 +28,18 @@ void writeOutput(Brain *arg_brain, Bitboard *board_) {
 
 int main() {
 
-    // Parser parser_;
-    // Brain brain_;
+    Parser parser_;
+    Brain brain_;
     Bitboard& board_ = Bitboard::getInstance();
 
-    // std::thread t1(readInput, &parser_, &board_);
-    // std::thread t2(writeOutput, &brain_, &board_);
+    std::thread t1(readInput, &parser_, &board_);
+    std::thread t2(writeOutput, &brain_, &board_);
 
-    // t1.join();
-    // t2.join();
+    t1.join();
+    t2.join();
 
-    MinMax algo(&board_);
-    algo.playTurn();
+    // MinMax algo(&board_);
+    // algo.playTurn();
 
     return 0;
 }
