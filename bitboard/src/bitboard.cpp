@@ -45,7 +45,7 @@ void Bitboard::displayUseBoard() {
     int temp_size_ = 0;
     int board_count_ = 0;
     for (; temp_size_ < size_;) {
-        for (int i = 1; i < 64; i += 2) {
+        for (int i = 0; i < 64; i++) {
             if (temp_size_ >= size_)
                 break;
             if (temp_size_ % row_size_ == 0)
@@ -68,16 +68,16 @@ void Bitboard::display() {
     int temp_size_ = 0;
     int board_count_ = 0;
     for (; temp_size_ < size_;) {
-        for (int i = 1; i < 64; i += 2) {
+        for (int i = 1; i <= 64; i+=2) {
             if (temp_size_ >= size_)
                 break;
             if (temp_size_ % row_size_ == 0)
                 std::cout << std::endl;
             temp_size_++;
-            uint64_t mask = 1ULL << i;
-            uint64_t mask_2 = 1ULL << (i - 1);
+            uint64_t mask_2 = 1ULL << (i +   1);
             if (bitboard_[board_count_] & mask_2)
             {
+                uint64_t mask = 1ULL << i;
                 if (bitboard_[board_count_] & mask) {
                     std::cout << "X ";
                 } else{
@@ -87,29 +87,29 @@ void Bitboard::display() {
                 std::cout << ". ";
             }
         }
-        board_count_ = ((temp_size_ ) / 64) + 1;
+        board_count_++;
     }
     std::cout << std::endl;
 }
 
 void Bitboard::play(int x_position, int y_position, int value) {
-    int total_position = ((y_position - 1) * row_size_) + x_position;
+    int total_position = (((y_position - 1) * row_size_) + x_position);
     int temp_size = 0;
     int board_count = 0;
     uint64_t mask;
     uint64_t mask_2;
 
     for (; temp_size < total_position * 2;) {
-        for (int i = 1; i < 64; i += 2) {
+        for (int i = 1; i <= 64 ; i+=2) {
             temp_size++;
-            mask = 1ULL << i;
-            mask_2 = 1ULL << (i - 1);
             if (temp_size == total_position) {
+                mask = 1ULL << i;
+                mask_2 = 1ULL << (i + 1);
                 bitboard_[board_count] |= mask_2;
                 if (value == 1)
                     bitboard_[board_count] |= mask;
             }
         }
-        board_count = (temp_size / 64) + 1;
+        board_count++;
     }
 }
