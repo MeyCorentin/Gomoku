@@ -19,6 +19,16 @@ void Bitboard::reSize(int arg_size) {
     bitboard_.resize(((arg_size * arg_size/64) + 1) * 2, 0);
 }
 
+int Bitboard::getSize()
+{
+    return size_;
+}
+
+int Bitboard::getRowSize()
+{
+    return row_size_;
+}
+
 void Bitboard::displayBoard() {
     int temp_size_ = 0;
     int board_count_ = 0;

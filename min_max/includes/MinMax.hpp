@@ -16,11 +16,13 @@ class MinMax {
     public:
         MinMax(Bitboard *bitboard);
         ~MinMax();
-        node findBestMove(int depth, int nodeIndex, bool isMax, std::vector<node> scores, int maxDepth);
-        std::vector<node> getScoreInMap();
+        node findBestMove(int depth, int nodeIndex, bool isMax, int maxDepth);
+        void getScoreInMap();
+        void updateScore(int countConsecutive, int openEnds);
         void playTurn();
         int getMaxDepth(int size);
         std::pair<int, int> nodeToPosition(node my_node);
     private:
         Bitboard *_bitboard;
+        std::vector<node> _scores;
 };
