@@ -13,24 +13,19 @@ MinMax::~MinMax()
 
 node MinMax::findBestMove(int depth, int nodeIndex, bool isMax, int maxDepth)
 {
-    if (depth == maxDepth)
-        return _scores.at(nodeIndex);
-
-    if (isMax) {
-        node node_left = findBestMove(depth + 1, nodeIndex * 2, false, maxDepth);
-        node node_right = findBestMove(depth + 1, nodeIndex * 2 + 1, false, maxDepth);
-        if (node_left.score > node_right.score)
-            return node_left;
-        else
-            return node_right;
-    } else {
-        node node_left = findBestMove(depth + 1, nodeIndex * 2, true, maxDepth);
-        node node_right = findBestMove(depth + 1, nodeIndex * 2 + 1, true, maxDepth);
-        if (node_left.score > node_right.score)
-            return node_right;
-        else
-            return node_left;
+    
+    node result_{1,1,1};
+    for(auto temp: _scores)
+    {
+        if (temp.score > result_.score)
+        {
+            result_.score = temp.score;
+            result_.i = temp.i;
+            result_.i_vector = temp.i_vector;
+        }
     }
+    std::cout << result_.score << std::endl;
+    return result_;
 }
 
 int MinMax::getMaxDepth(int size)
@@ -38,38 +33,48 @@ int MinMax::getMaxDepth(int size)
     return (size == 1) ? 0 : 1 + getMaxDepth(size / 2);
 }
 
-int MinMax::recurseScore(int score, std::pair<int, int> position, std::pair<int, int> direction)
+double MinMax::recurseScore(double score_, int depth, double alpha, double beta, std::pair<int, int> position, std::pair<int, int> direction)
 {
-    if (position.first >= _bitboard->getSize() || position.second >= _bitboard->getSize() || position.first < 0 || position.second < 0)
-        return score;
+    if (depth == 0)
+        return score_;
+
+    if (position.first >( _bitboard->getRowSize() / 2) || position.second >( _bitboard->getRowSize() / 2) || position.first < 1 || position.second < 1)
+        return score_;
 
     position.first += direction.first;
     position.second += direction.second;
-    score += recurseScore(score, position, direction);
 
-    if (_bitboard->getBitboardColor(_bitboard->getIndex(position)) == 1)
-        score += 1;
+    double child_score = recurseScore(score_, depth--, alpha, beta, position, direction) / 2;
 
-    return score;
+    score_ = (score_ + child_score) / 2;
+
+    int color  = _bitboard->getBitboardColor(_bitboard->getIndex(position));
+    if (color== 1)
+        score_ += 10;
+    if (color== 2)
+        score_ += 5;
+
+    return score_ * 0.9;
 }
 
-int MinMax::updateScore(int index) //Todo change direction by value
+double MinMax::updateScore(int index)
 {
-    int score = 0;
+    double score = 0;
+    int depth = 1;
     std::pair<int, int> position = _bitboard->getPosition(index);
-
-    score += recurseScore(0, position, std::make_pair(-1,0)); //Left
-    score += recurseScore(0, position, std::make_pair(-1,-1)); //Top Left
-    score += recurseScore(0, position, std::make_pair(0,-1)); //Top
-    score += recurseScore(0, position, std::make_pair(1,-1)); //Top Right
-    score += recurseScore(0, position, std::make_pair(1,0)); //Right
-    score += recurseScore(0, position, std::make_pair(1,1)); //Bottom Right
-    score += recurseScore(0, position, std::make_pair(0,1)); //Bottom
-    score += recurseScore(0, position, std::make_pair(-1,1)); //Bottom Left
+    if (_bitboard->getBitboardColor(_bitboard->getIndex(position)) != 0)
+        return -1;
+    score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(-1,0)); //Leftx
+    score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(0,-1)); //Top
+    score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(1,0)); //Right
+    score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(0,1)); //Bottom
+    score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(-1,-1)); //Top Left
+    score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(1,-1)); //Top Right
+    score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(1,1)); //Bottom Right
+    score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(-1,1)); //Bottom Left
     std::cout << "|" << score << "|";
     return score;
 }
-
 
 void MinMax::getScoreInMap()
 {
@@ -86,7 +91,6 @@ void MinMax::getScoreInMap()
                 break;
             if (temp_size_ % _bitboard->getRowSize() == 0)
                 std::cout << std::endl;
-            // _bitboard->getBitboardColor(temp_size_  + _bitboard->getRowSize());
             _scores.push_back(node{updateScore(temp_size_  + _bitboard->getRowSize()), (int)_scores.size() + 1,temp_size_  + _bitboard->getRowSize()});
         }
         board_count_++;

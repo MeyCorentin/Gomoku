@@ -1,5 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
+#include <algorithm>
+#include <vector>
 
 #pragma once
 
@@ -7,7 +10,7 @@
 
 struct node
 {
-    int score;
+    double score;
     int i;
     int i_vector;
 };
@@ -19,9 +22,9 @@ class MinMax {
         node findBestMove(int depth, int nodeIndex, bool isMax, int maxDepth);
         void getScoreInMap();
 
-        int updateScore(int index);
+        double updateScore(int index);
         std::pair<int,int> playTurn();
-        int recurseScore(int score, std::pair<int, int> position, std::pair<int, int> direction);
+        double recurseScore(double score_, int depth, double alpha, double beta, std::pair<int, int> position, std::pair<int, int> direction);
         int getMaxDepth(int size);
         std::pair<int, int> nodeToPosition(node my_node);
     private:
