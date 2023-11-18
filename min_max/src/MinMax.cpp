@@ -47,7 +47,7 @@ double MinMax::recurseScore(double score_, int depth, double alpha, double beta,
 
     score_ = (score_ + child_score) / 2;
 
-    int color  = _bitboard->getBit(position.first, position.second);
+    int color  = _bitboard->getBit(position);
     if (color== 1)
         score_ += 10;
     if (color== 2)
@@ -59,7 +59,7 @@ double MinMax::updateScore(std::pair<int, int> position)
 {
     double score = 0;
     int depth = 1;
-    if (_bitboard->getBit(position.first, position.second != 0))
+    if (_bitboard->getBit(position)!= 0)
         return -1;
     score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(-1,0)); //Leftx
     score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(0,-1)); //Top
@@ -69,7 +69,6 @@ double MinMax::updateScore(std::pair<int, int> position)
     score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(1,-1)); //Top Right
     score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(1,1)); //Bottom Right
     score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(-1,1)); //Bottom Left
-    std::cout << "|" << score << "|";
     return score;
 }
 
@@ -79,14 +78,10 @@ void MinMax::getScoreInMap()
     int x_size = 0;
     int y_size = 0;
     int board_count_ = 0;
-    int case_score = 0;
-    int i;
 
     for (y_size = 0; y_size <= _bitboard->getRowSize();y_size++) {
-        for (x_size = 0; x_size <= _bitboard->getRowSize(); x_size++) {
+        for (x_size = 0; x_size <= _bitboard->getRowSize(); x_size++)
             _scores.push_back(node{updateScore(std::make_pair(x_size, y_size)), (int)_scores.size() + 1,std::make_pair(x_size, y_size)});
-        }
-        std::cout << std::endl;
         board_count_++;
     }
 }

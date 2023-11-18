@@ -16,12 +16,12 @@ class Bitboard {
     Bitboard(int size);
 
     void reSize(int size);
-    void setBit(int x, int y, int color);
+    void setBit(std::pair<int, int> position, int color);
     int getSize();
     int getRowSize();
     std::vector<std::bitset<2>> getBitboard();
 
-    int getBit(int x, int y) const;
+    int getBit(std::pair<int, int> position) const;
 
     void displayBoard();
 };

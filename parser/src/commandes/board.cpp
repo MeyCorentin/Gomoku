@@ -11,7 +11,7 @@ void Parser::C_board(Bitboard &arg_board, std::string &arg_input)
         char delimiter;
         int x, y, value;
         iss >> x >> delimiter >> y >> delimiter >> value;
-        arg_board.setBit(x, y, value - 1);
+        arg_board.setBit(std::make_pair(x - 1, y - 1), value - 1);
     }
     if (arg_input.substr(0, 5) == "BOARD") {
         on_board_creation = true;
