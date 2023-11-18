@@ -30,10 +30,10 @@ int main() {
 
     Parser parser_;
     Brain brain_;
-    Bitboard& board_ = Bitboard::getInstance();
+    Bitboard bitBoard;
 
-    std::thread t1(readInput, &parser_, &board_);
-    std::thread t2(writeOutput, &brain_, &board_);
+    std::thread t1(readInput, &parser_, &bitBoard);
+    std::thread t2(writeOutput, &brain_, &bitBoard);
 
     t1.join();
     t2.join();

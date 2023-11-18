@@ -13,15 +13,14 @@ MinMax::~MinMax()
 
 node MinMax::findBestMove(int depth, int nodeIndex, bool isMax, int maxDepth)
 {
-    
-    node result_{1,1,1};
+    node result_{1,1,std::make_pair(1, 1)};
     for(auto temp: _scores)
     {
         if (temp.score > result_.score)
         {
             result_.score = temp.score;
             result_.i = temp.i;
-            result_.i_vector = temp.i_vector;
+            result_.position = temp.position;
         }
     }
     std::cout << result_.score << std::endl;
@@ -48,21 +47,19 @@ double MinMax::recurseScore(double score_, int depth, double alpha, double beta,
 
     score_ = (score_ + child_score) / 2;
 
-    int color  = _bitboard->getBitboardColor(_bitboard->getIndex(position));
+    int color  = _bitboard->getBit(position.first, position.second);
     if (color== 1)
         score_ += 10;
     if (color== 2)
         score_ += 5;
-
     return score_ * 0.9;
 }
 
-double MinMax::updateScore(int index)
+double MinMax::updateScore(std::pair<int, int> position)
 {
     double score = 0;
     int depth = 1;
-    std::pair<int, int> position = _bitboard->getPosition(index);
-    if (_bitboard->getBitboardColor(_bitboard->getIndex(position)) != 0)
+    if (_bitboard->getBit(position.first, position.second != 0))
         return -1;
     score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(-1,0)); //Leftx
     score = recurseScore(score, depth--, -INFINITY, INFINITY, position, std::make_pair(0,-1)); //Top
@@ -78,28 +75,25 @@ double MinMax::updateScore(int index)
 
 void MinMax::getScoreInMap()
 {
-    std::vector<uint64_t> board_ = _bitboard->getBitboard();
-    int temp_size_ = -1;
+    std::vector<std::bitset<2>> board_ = _bitboard->getBitboard();
+    int x_size = 0;
+    int y_size = 0;
     int board_count_ = 0;
     int case_score = 0;
     int i;
 
-    for (; temp_size_ < _bitboard->getSize();) {
-        for (int i = 1; i <= 64; i+=2) {
-            temp_size_++;
-            if (temp_size_ >= _bitboard->getSize())
-                break;
-            if (temp_size_ % _bitboard->getRowSize() == 0)
-                std::cout << std::endl;
-            _scores.push_back(node{updateScore(temp_size_  + _bitboard->getRowSize()), (int)_scores.size() + 1,temp_size_  + _bitboard->getRowSize()});
+    for (y_size = 0; y_size <= _bitboard->getRowSize();y_size++) {
+        for (x_size = 0; x_size <= _bitboard->getRowSize(); x_size++) {
+            _scores.push_back(node{updateScore(std::make_pair(x_size, y_size)), (int)_scores.size() + 1,std::make_pair(x_size, y_size)});
         }
+        std::cout << std::endl;
         board_count_++;
     }
 }
 
 std::pair<int, int> MinMax::nodeToPosition(node my_node)
 {
-    return _bitboard->getPosition(my_node.i_vector);
+    return my_node.position;
 }
 
 std::pair<int, int> MinMax::playTurn()

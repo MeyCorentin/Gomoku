@@ -7,6 +7,13 @@ void Parser::C_turn(Bitboard &arg_board, std::string &arg_input)
     std::string cmd;
     int x, y;
     iss >> cmd >> x >> y;
-    arg_board.play(std::make_pair(x,y), 0);
-    arg_board.play(min_max.playTurn(), 1);
+    std::cout << "---" << std::endl;
+    std::cout << x << "/" << y << std::endl;
+    std::cout << "---" << std::endl;
+    arg_board.setBit(x, y, 0);
+    std::pair<int, int> result = min_max.playTurn();
+    std::cout << "---" << std::endl;
+    std::cout << result.first << "/" << result.second << std::endl;
+    std::cout << "---" << std::endl;
+    arg_board.setBit(result.first, result.second , 1);
 }

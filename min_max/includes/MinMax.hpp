@@ -12,7 +12,7 @@ struct node
 {
     double score;
     int i;
-    int i_vector;
+    std::pair<int, int> position;
 };
 
 class MinMax {
@@ -22,7 +22,7 @@ class MinMax {
         node findBestMove(int depth, int nodeIndex, bool isMax, int maxDepth);
         void getScoreInMap();
 
-        double updateScore(int index);
+        double updateScore(std::pair<int, int> position);
         std::pair<int,int> playTurn();
         double recurseScore(double score_, int depth, double alpha, double beta, std::pair<int, int> position, std::pair<int, int> direction);
         int getMaxDepth(int size);

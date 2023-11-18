@@ -2,42 +2,26 @@
 #include <cstdint>
 #include <string>
 #include <iostream>
-
+#include <bitset>
 #pragma once
 
 class Bitboard {
+    std::vector<std::bitset<2>> board_;
+    int size_;
+    int row_size_;
+
     public:
-        static Bitboard& getInstance();
 
-        std::vector<uint64_t>& getBitboard();
+    Bitboard();
+    Bitboard(int size);
 
-        void reSize(int arg_size);
+    void reSize(int size);
+    void setBit(int x, int y, int color);
+    int getSize();
+    int getRowSize();
+    std::vector<std::bitset<2>> getBitboard();
 
-        void displayBoard();
+    int getBit(int x, int y) const;
 
-        void displayUseBoard();
-
-        void display();
-
-        int getSize();
-
-        int getRowSize();
-
-        void play(std::pair<int,int> position, int value);
-
-        std::pair<int, int> getPosition(int index);
-
-        int getIndex(std::pair<int, int> position);
-
-        int getBitboardColor(int index);
-
-    private:
-        std::vector<uint64_t> bitboard_;
-        int size_;
-        int row_size_;
-
-        Bitboard();
-
-        Bitboard(const Bitboard&) = delete;
-        Bitboard& operator=(const Bitboard&) = delete;
+    void displayBoard();
 };

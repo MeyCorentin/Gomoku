@@ -23,7 +23,7 @@ void Parser::Compute(Bitboard &arg_board, std::string &arg_input)
     if (arg_input.substr(0, 8) == "DISPLAY") {
         // arg_board.displayBoard();
         // arg_board.displayUseBoard();
-        arg_board.display();
+        arg_board.displayBoard();
         return;
     }
 }
