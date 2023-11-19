@@ -67,7 +67,6 @@ double MinMax::updateScore(std::pair<int, int> position)
     score += recurseScore(0, depth, position, std::make_pair(1,-1)); //Top Right
     score += recurseScore(0, depth, position, std::make_pair(1,1)); //Bottom Right
     score += recurseScore(0, depth, position, std::make_pair(-1,1)); //Bottom Left
-    depth--;
     return score;
 }
 
