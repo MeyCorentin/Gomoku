@@ -16,5 +16,7 @@ class Parser {
         void C_start(Bitboard &arg_board, std::string &arg_input);
         void C_turn(Bitboard &arg_board, std::string &arg_input);
         void C_board(Bitboard &arg_board, std::string &arg_input);
+        void C_begin(Bitboard &arg_board, std::string &arg_input);
+        void C_error();
 };
 

@@ -23,7 +23,7 @@ node MinMax::findBestMove(int depth, int nodeIndex, bool isMax, int maxDepth)
             result_.position = temp.position;
         }
     }
-    std::cout << result_.score << std::endl;
+    // std::cout << result_.score << std::endl;
     return result_;
 }
 
@@ -100,8 +100,8 @@ std::pair<int, int> MinMax::playTurn()
     node result = findBestMove(0, 0, true, maxDepth);
     std::pair<int, int> position = nodeToPosition(result);
 
-    std::cout << "Result : " << result.score << std::endl;
+    // std::cout << "Result : " << result.score << std::endl;
 
-    std::cout << "SUGGEST [" << position.first << "] [" << position.second << "]" << std::endl;
+    // std::cout << "SUGGEST [" << position.first << "] [" << position.second << "]" << std::endl;
     return std::make_pair(position.first, position.second);
 }

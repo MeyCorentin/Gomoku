@@ -14,6 +14,7 @@ src = 	main.cpp	\
 		parser/src/commandes/board.cpp	\
 		parser/src/commandes/start.cpp	\
 		parser/src/commandes/turn.cpp	\
+		parser/src/commandes/begin.cpp	\
 
 NAME = pbrain-gomoku-ai
 OBJ = ${src:.cpp=.o}
