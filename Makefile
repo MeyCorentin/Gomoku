@@ -9,10 +9,12 @@ ifeq ($(OS),Windows_NT)
 	CXX = x86_64-w64-mingw32-g++
 	EXE = .exe
 	CXXFLAGS = -std=c++20
+	RM = del
 else
 	CXX = g++
 	EXE =
 	CXXFLAGS = -std=c++20
+	RM = rm -rf
 endif
 
 src = main.cpp \
@@ -36,12 +38,12 @@ $(NAME): $(OBJ)
 all: $(NAME)
 
 clean:
-	rm -rf $(OBJ)
+	$(RM) $(OBJ)
 	@echo 'Temporary files deleted'
 
 fclean: clean
-	rm -rf $(NAME)
-	rm -rf unit_tests
+	$(RM) $(NAME)
+	$(RM) unit_tests
 	@echo 'Executable deleted'
 
 re: fclean all
