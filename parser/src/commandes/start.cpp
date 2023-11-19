@@ -1,5 +1,4 @@
 #include "../../includes/parser.hpp"
-#include "error.cpp"
 
 void Parser::C_start(Bitboard &arg_board, std::string &arg_input)
 {
