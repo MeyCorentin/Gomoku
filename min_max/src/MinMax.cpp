@@ -34,10 +34,8 @@ node MinMax::findBestMove()
             result_defense.position = temp.position;
         }
     }
-    std::cout << result_defense.score << " vs " << result_attack.score << std::endl;
     if (result_defense.score >= result_attack.score)
         return result_defense;
-    std::cout << "A";
     return result_attack;
 }
 
@@ -97,10 +95,10 @@ void MinMax::displayScore()
         {
             defense_score = (int)updateScore(std::make_pair(x_size, y_size), false);
             attack_score =(int)updateScore(std::make_pair(x_size, y_size), true);
-            // if (defense_score >= attack_score)
+            if (defense_score >= attack_score)
                 std::cout << "|" << defense_score << "|";
-            // else
-            //     std::cout << "|" << attack_score << "|";
+            else
+                std::cout << "|" << attack_score << "|";
         }
         board_count_++;
         std::cout << std::endl;
