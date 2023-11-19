@@ -30,4 +30,9 @@ void Parser::Compute(Bitboard &arg_board, std::string &arg_input)
         arg_board.displayBoard();
         return;
     }
+    if (arg_input.substr(0, 8) == "SCORE") {
+        MinMax min_max(&arg_board);
+        min_max.displayScore();
+        return;
+    }
 }

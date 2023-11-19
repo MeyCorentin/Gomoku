@@ -6,9 +6,14 @@ Bitboard::Bitboard(int size) : board_(size * size), size_(size * size), row_size
 void Bitboard::reSize(int size)
 {
     board_ = std::vector<std::bitset<2>>(size * size);
+    for (auto& bitset : board_) {
+        bitset.reset();
+    }
     size_ = size * size;
     row_size_ = size;
 }
+
+
 void Bitboard::setBit(std::pair<int, int> position, int color) {
     int index = position.first + position.second * row_size_;
     board_[index].set(0, 1);
@@ -45,7 +50,7 @@ int Bitboard::getBit(std::pair<int, int> position)const {
 void Bitboard::displayBoard() {
     for (int i = 0; i < row_size_; i++) {
         for (int j = 0; j < row_size_; j++) {
-            int color = getBit(std::make_pair(i, j));
+            int color = getBit(std::make_pair(j, i));
             if (color == 0) {
                 std::cout << ". ";
             } else if (color == 1) {
