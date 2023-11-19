@@ -50,7 +50,7 @@ double MinMax::recurseScore(double score_, int depth, std::pair<int, int> positi
     if (color == 1)
         score_ += 10;
     if (color == 2)
-        score_ += 5;
+        score_ += 2;
 
     return score_;
 }
