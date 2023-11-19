@@ -14,8 +14,8 @@ MinMax::~MinMax()
 
 node MinMax::findBestMove()
 {
-    node result_attack{1,1,std::make_pair(1, 1)};
-    node result_defense{1,1,std::make_pair(1, 1)};
+    node result_attack = *_scores_attack.begin();
+    node result_defense = *_scores_defense.begin();
     for (auto temp: _scores_attack)
     {
         if (temp.score > result_attack.score)
@@ -57,8 +57,44 @@ double MinMax::recurseScore(double score_, int depth, std::pair<int, int> positi
         return score_;
 
     depth--;
-    score_ += ((recurseScore(score_, depth, position, direction, attack)) * (6 - depth)) + 10;
+    score_ += ((recurseScore(score_, depth, position, direction, attack)) * (6 - depth)) + 100;
     return score_;
+}
+
+
+int MinMax::spaceFree(std::pair<int, int> position, std::pair<int,int> direction, bool attack)
+{
+    position.first += direction.first;
+    position.second += direction.second;
+    if (position.first > (_bitboard->getRowSize() - 1) || (position.second > _bitboard->getRowSize() - 1) || position.first < 0 || position.second < 0)
+        return 0;
+    int color = _bitboard->getBit(position);
+    if (color != 0)
+        return 0;
+    else
+        return (1 + spaceFree(position, direction, attack));
+
+}
+
+int MinMax::pionNumberInDirection(std::pair<int, int> position, std::pair<int,int> direction, bool attack)
+{
+    position.first += direction.first;
+    position.second += direction.second;
+    if (position.first > (_bitboard->getRowSize() - 1) || (position.second > _bitboard->getRowSize() - 1) || position.first < 0 || position.second < 0)
+        return 0;
+    int color = _bitboard->getBit(position);
+    if (color != (attack? 2 : 1))
+        return 0;
+    else
+        return (1 + pionNumberInDirection(position, direction, attack));
+
+}
+
+int MinMax::maxPossibleLine(std::pair<int, int> position, std::pair<int,int> direction, bool attack)
+{
+    int pion_number = pionNumberInDirection(position, std::make_pair(-direction.first, -direction.second), attack);
+    int space_free = spaceFree(position, direction, attack);
+    return pion_number + space_free;
 }
 
 double MinMax::updateScore(std::pair<int, int> position, bool attack)
@@ -67,14 +103,30 @@ double MinMax::updateScore(std::pair<int, int> position, bool attack)
     int depth = 5;
     if (_bitboard->getBit(position) != 0)
         return 0;
-    score += recurseScore(0, depth, position, std::make_pair(-1,0), attack); //Leftx
-    score += recurseScore(0, depth, position, std::make_pair(0,-1), attack); //Top
-    score += recurseScore(0, depth, position, std::make_pair(1,0), attack); //Right
-    score += recurseScore(0, depth, position, std::make_pair(0,1), attack); //Bottom
-    score += recurseScore(0, depth, position, std::make_pair(-1,-1), attack); //Top Left
-    score += recurseScore(0, depth, position, std::make_pair(1,-1), attack); //Top Right
-    score += recurseScore(0, depth, position, std::make_pair(1,1), attack); //Bottom Right
-    score += recurseScore(0, depth, position, std::make_pair(-1,1), attack); //Bottom Left
+    int max_possible = 0;
+    max_possible = maxPossibleLine(position, std::make_pair(-1,0), attack);
+    score += recurseScore(0, depth, position, std::make_pair(-1,0), attack) -5 + max_possible; //Leftx
+
+    max_possible = maxPossibleLine(position, std::make_pair(0,-1), attack);
+    score += recurseScore(0, depth, position, std::make_pair(0,-1), attack) -5 + max_possible; //Top
+
+    max_possible = maxPossibleLine(position, std::make_pair(1,0), attack);
+    score += recurseScore(0, depth, position, std::make_pair(1,0), attack) -5 + max_possible; //Right
+
+    max_possible = maxPossibleLine(position, std::make_pair(0,1), attack);
+    score += recurseScore(0, depth, position, std::make_pair(0,1), attack) -5 + max_possible; //Bottom
+
+    max_possible = maxPossibleLine(position, std::make_pair(-1,-1), attack);
+    score += recurseScore(0, depth, position, std::make_pair(-1,-1), attack) - 5 + max_possible; //Top Left
+
+    max_possible = maxPossibleLine(position, std::make_pair(1,-1), attack);
+    score += recurseScore(0, depth, position, std::make_pair(1,-1), attack) - 5 + max_possible; //Top Right
+
+    max_possible = maxPossibleLine(position, std::make_pair(1,1), attack);
+    score += recurseScore(0, depth, position, std::make_pair(1,1), attack) - 5 + max_possible; //Bottom Right
+
+    max_possible = maxPossibleLine(position, std::make_pair(-1,1), attack);
+    score += recurseScore(0, depth, position, std::make_pair(-1,1), attack) - 5 + max_possible; //Bottom Left
     return score;
 }
 

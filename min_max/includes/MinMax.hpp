@@ -15,6 +15,14 @@ struct node
     std::pair<int, int> position;
 };
 
+enum
+{
+    VERTICAL,
+    HORIZONTAL,
+    HAUTBAS,
+    BASHAUT,
+};
+
 class MinMax {
     public:
         MinMax(Bitboard *bitboard);
@@ -26,10 +34,13 @@ class MinMax {
         double updateScore(std::pair<int, int> position, bool attack);
         std::pair<int,int> playTurn();
         double recurseScore(double score_, int depth, std::pair<int, int> position, std::pair<int, int> direction, bool attack);
+        int maxPossibleLine(std::pair<int, int> position, std::pair<int,int> direction, bool attack);
+        int pionNumberInDirection(std::pair<int, int> position, std::pair<int,int> direction, bool attack);
+        int spaceFree(std::pair<int, int> position, std::pair<int,int> direction, bool attack);
         int getMaxDepth(int size);
         std::pair<int, int> nodeToPosition(node my_node);
     private:
-        Bitboard *_bitboard;
-        std::vector<node> _scores_defense;
-        std::vector<node> _scores_attack;
+            Bitboard *_bitboard;
+            std::vector<node> _scores_defense;
+            std::vector<node> _scores_attack;
 };
