@@ -45,9 +45,11 @@ double MinMax::recurseScore(double score_, int depth, std::pair<int, int> positi
     int color = _bitboard->getBit(position);
     if (color == 0)
         return score_;
-    score_ += (recurseScore(score_, depth, position, direction)) * 2;
+    score_ += (recurseScore(score_, depth, position, direction)) * (6 - depth);
 
     if (color == 1)
+        score_ += 10;
+    if (color == 2)
         score_ += 5;
 
     return score_;
