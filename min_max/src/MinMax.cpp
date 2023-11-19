@@ -59,14 +59,15 @@ double MinMax::updateScore(std::pair<int, int> position)
     int depth = 5;
     if (_bitboard->getBit(position)!= 0)
         return 0;
-    score += recurseScore(0, depth--, position, std::make_pair(-1,0)); //Leftx
-    score += recurseScore(0, depth--, position, std::make_pair(0,-1)); //Top
-    score += recurseScore(0, depth--, position, std::make_pair(1,0)); //Right
-    score += recurseScore(0, depth--, position, std::make_pair(0,1)); //Bottom
-    score += recurseScore(0, depth--, position, std::make_pair(-1,-1)); //Top Left
-    score += recurseScore(0, depth--, position, std::make_pair(1,-1)); //Top Right
-    score += recurseScore(0, depth--, position, std::make_pair(1,1)); //Bottom Right
-    score += recurseScore(0, depth--, position, std::make_pair(-1,1)); //Bottom Left
+    score += recurseScore(0, depth, position, std::make_pair(-1,0)); //Leftx
+    score += recurseScore(0, depth, position, std::make_pair(0,-1)); //Top
+    score += recurseScore(0, depth, position, std::make_pair(1,0)); //Right
+    score += recurseScore(0, depth, position, std::make_pair(0,1)); //Bottom
+    score += recurseScore(0, depth, position, std::make_pair(-1,-1)); //Top Left
+    score += recurseScore(0, depth, position, std::make_pair(1,-1)); //Top Right
+    score += recurseScore(0, depth, position, std::make_pair(1,1)); //Bottom Right
+    score += recurseScore(0, depth, position, std::make_pair(-1,1)); //Bottom Left
+    depth--;
     return score;
 }
 
