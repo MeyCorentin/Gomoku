@@ -3,7 +3,8 @@
 MinMax::MinMax(Bitboard *bitboard)
 {
     _bitboard = bitboard;
-    _scores = {};
+    _scores_attack = {};
+    _scores_defense = {};
 }
 
 MinMax::~MinMax()
@@ -11,20 +12,33 @@ MinMax::~MinMax()
 
 }
 
-node MinMax::findBestMove(int depth, int nodeIndex, bool isMax, int maxDepth)
+node MinMax::findBestMove()
 {
-    node result_{1,1,std::make_pair(1, 1)};
-    for(auto temp: _scores)
+    node result_attack{1,1,std::make_pair(1, 1)};
+    node result_defense{1,1,std::make_pair(1, 1)};
+    for (auto temp: _scores_attack)
     {
-        if (temp.score > result_.score)
+        if (temp.score > result_attack.score)
         {
-            result_.score = temp.score;
-            result_.i = temp.i;
-            result_.position = temp.position;
+            result_attack.score = temp.score;
+            result_attack.i = temp.i;
+            result_attack.position = temp.position;
         }
     }
-    // std::cout << result_.score << std::endl;
-    return result_;
+    for (auto temp: _scores_defense)
+    {
+        if (temp.score > result_defense.score)
+        {
+            result_defense.score = temp.score;
+            result_defense.i = temp.i;
+            result_defense.position = temp.position;
+        }
+    }
+    std::cout << result_defense.score << " vs " << result_attack.score << std::endl;
+    if (result_defense.score >= result_attack.score)
+        return result_defense;
+    std::cout << "A";
+    return result_attack;
 }
 
 int MinMax::getMaxDepth(int size)
@@ -32,7 +46,7 @@ int MinMax::getMaxDepth(int size)
     return (size == 1) ? 0 : 1 + getMaxDepth(size / 2);
 }
 
-double MinMax::recurseScore(double score_, int depth, std::pair<int, int> position, std::pair<int, int> direction)
+double MinMax::recurseScore(double score_, int depth, std::pair<int, int> position, std::pair<int, int> direction, bool attack)
 {
     if (depth == 0)
         return score_;
@@ -43,32 +57,30 @@ double MinMax::recurseScore(double score_, int depth, std::pair<int, int> positi
         return score_;
     depth--;
     int color = _bitboard->getBit(position);
-    if (color == 0)
+    if (color == 0 || color != ( (attack ? 1 : 2 )))
         return score_;
-    score_ += (recurseScore(score_, depth, position, direction)) * (6 - depth);
 
-    if (color == 1)
-        score_ += 10;
-    if (color == 2)
-        score_ += 2;
+    score_ += (recurseScore(score_, depth, position, direction, attack)) * (6 - depth);
+    score_ += 10;
+
 
     return score_;
 }
 
-double MinMax::updateScore(std::pair<int, int> position)
+double MinMax::updateScore(std::pair<int, int> position, bool attack)
 {
     double score = 0;
     int depth = 5;
-    if (_bitboard->getBit(position)!= 0)
+    if (_bitboard->getBit(position) != 0)
         return 0;
-    score += recurseScore(0, depth, position, std::make_pair(-1,0)); //Leftx
-    score += recurseScore(0, depth, position, std::make_pair(0,-1)); //Top
-    score += recurseScore(0, depth, position, std::make_pair(1,0)); //Right
-    score += recurseScore(0, depth, position, std::make_pair(0,1)); //Bottom
-    score += recurseScore(0, depth, position, std::make_pair(-1,-1)); //Top Left
-    score += recurseScore(0, depth, position, std::make_pair(1,-1)); //Top Right
-    score += recurseScore(0, depth, position, std::make_pair(1,1)); //Bottom Right
-    score += recurseScore(0, depth, position, std::make_pair(-1,1)); //Bottom Left
+    score += recurseScore(0, depth, position, std::make_pair(-1,0), attack); //Leftx
+    score += recurseScore(0, depth, position, std::make_pair(0,-1), attack); //Top
+    score += recurseScore(0, depth, position, std::make_pair(1,0), attack); //Right
+    score += recurseScore(0, depth, position, std::make_pair(0,1), attack); //Bottom
+    score += recurseScore(0, depth, position, std::make_pair(-1,-1), attack); //Top Left
+    score += recurseScore(0, depth, position, std::make_pair(1,-1), attack); //Top Right
+    score += recurseScore(0, depth, position, std::make_pair(1,1), attack); //Bottom Right
+    score += recurseScore(0, depth, position, std::make_pair(-1,1), attack); //Bottom Left
     return score;
 }
 
@@ -78,10 +90,18 @@ void MinMax::displayScore()
     int x_size = 0;
     int y_size = 0;
     int board_count_ = 0;
-
+    int attack_score = 0;
+    int defense_score = 0;
     for (y_size = 0; y_size < _bitboard->getRowSize();y_size++) {
         for (x_size = 0; x_size < _bitboard->getRowSize(); x_size++)
-            std::cout << "|" << (int)updateScore(std::make_pair(x_size, y_size)) << "|";
+        {
+            defense_score = (int)updateScore(std::make_pair(x_size, y_size), false);
+            attack_score =(int)updateScore(std::make_pair(x_size, y_size), true);
+            // if (defense_score >= attack_score)
+                std::cout << "|" << defense_score << "|";
+            // else
+            //     std::cout << "|" << attack_score << "|";
+        }
         board_count_++;
         std::cout << std::endl;
     }
@@ -96,7 +116,10 @@ void MinMax::getScoreInMap()
 
     for (y_size = 0; y_size < _bitboard->getRowSize();y_size++) {
         for (x_size = 0; x_size < _bitboard->getRowSize(); x_size++)
-            _scores.push_back(node{updateScore(std::make_pair(x_size, y_size)), (int)_scores.size() + 1,std::make_pair(x_size, y_size)});
+        {
+            _scores_defense.push_back(node{updateScore(std::make_pair(x_size, y_size), false), (int)_scores_defense.size() + 1,std::make_pair(x_size, y_size)});
+            _scores_attack.push_back(node{updateScore(std::make_pair(x_size, y_size), true), (int)_scores_attack.size() + 1,std::make_pair(x_size, y_size)});
+        }
         board_count_++;
     }
 }
@@ -109,14 +132,11 @@ std::pair<int, int> MinMax::nodeToPosition(node my_node)
 std::pair<int, int> MinMax::playTurn()
 {
     getScoreInMap();
-    int size = _scores.size();
-    int maxDepth = getMaxDepth(size);
 
-    node result = findBestMove(0, 0, true, maxDepth);
-    std::pair<int, int> position = nodeToPosition(result);
+    node result = findBestMove();
 
     // std::cout << "Result : " << result.score << std::endl;
 
     // std::cout << "SUGGEST [" << position.first << "] [" << position.second << "]" << std::endl;
-    return std::make_pair(position.first, position.second);
+    return std::make_pair(result.position.first, result.position.second);
 }
