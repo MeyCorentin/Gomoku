@@ -55,10 +55,12 @@ all: $(NAME)
 
 clean:
 	$(RM) $(OBJ)
+	$(RM) $(BONUS_OBJ)
 	@echo 'Temporary files deleted'
 
 fclean: clean
 	$(RM) $(NAME)
+	$(RM) $(BONUS_NAME)
 	$(RM) unit_tests
 	@echo 'Executable deleted'
 

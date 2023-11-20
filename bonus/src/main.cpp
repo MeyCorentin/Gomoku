@@ -38,7 +38,7 @@ int main() {
     Parser parser_;
     Brain brain_;
     Bitboard bitBoard;
-    Render myRender;
+    Render myRender(&bitBoard);
 
     myRender.createBoard(20);
 
@@ -50,6 +50,7 @@ int main() {
     while (!stop_bool) {
         myRender.refreshWindow();
         myRender.checkInputs();
+        myRender.updateBoard();
         myRender.drawBoard();
     }
     

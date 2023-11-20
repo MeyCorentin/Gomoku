@@ -1,9 +1,11 @@
 #include "../includes/Render.hpp"
 
-Render::Render()
+Render::Render(Bitboard *board)
 {
-    _windowSize = 200;
+    _windowSize = 800;
     _window.create(sf::VideoMode(_windowSize, _windowSize), "Gomoku");
+    _bitboard = board;
+    _sizePiece = 0;
 }
 
 Render::~Render()
@@ -15,7 +17,10 @@ void Render::createBoard(int size)
 {
     std::vector<std::vector<sf::RectangleShape>> temp_board;
 
+    size += 1;
+
     _sizeCase = _windowSize / size - 1;
+    _sizePiece = (_windowSize / size - 1) / 2;
 
     for (int i = 0; i < size; i++) {
         std::vector<sf::RectangleShape> temp_line;
@@ -32,6 +37,27 @@ void Render::createBoard(int size)
     _board = temp_board;
 }
 
+void Render::updateBoard()
+{
+    std::vector<sf::CircleShape> pieces;
+    for (int i = 0; i < _bitboard->getRowSize(); i++) {
+        for (int j = 0; j < _bitboard->getRowSize(); j++) {
+            int color = _bitboard->getBit(std::make_pair(j, i));
+            if (color != 0) {
+                sf::CircleShape piece(_sizePiece); //Todo change size
+                sf::Vector2f position = {(float)((i * (_sizeCase + 1)) - _sizePiece), (float)((j * (_sizeCase + 1) - _sizePiece))};
+                piece.setPosition(position);
+                if (color == 1)
+                    piece.setFillColor(sf::Color::Black);
+                else
+                    piece.setFillColor(sf::Color::White);
+                pieces.push_back(piece);
+            }
+        }
+    }
+    _pieces = pieces;
+}
+
 void Render::drawBoard()
 {
     for (auto line = _board.begin(); line != _board.end(); line++) {
@@ -39,6 +65,8 @@ void Render::drawBoard()
             _window.draw(*case_board);
         }
     }
+    for (auto piece = _pieces.begin(); piece != _pieces.end(); piece++)
+        _window.draw(*piece);
     _window.display();
 }
 
