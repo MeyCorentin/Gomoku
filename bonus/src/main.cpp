@@ -33,15 +33,6 @@ void writeOutput(Brain *arg_brain, Bitboard *board_) {
     }
 }
 
-void renderBoard(Render *render, Bitboard *board)
-{
-    while (!stop_bool) {
-        IO_MUTEX.lock();
-        render->loop();
-        IO_MUTEX.unlock();
-    }
-}
-
 int main() {
 
     Parser parser_;
@@ -55,11 +46,15 @@ int main() {
     std::future<void> futureObj = exitSignal.get_future();
     std::thread t1(readInput, &parser_, &bitBoard);
     std::thread t2(writeOutput, &brain_, &bitBoard);
-    std::thread t3(renderBoard, &myRender, &bitBoard);
+
+    while (!stop_bool) {
+        myRender.refreshWindow();
+        myRender.checkInputs();
+        myRender.drawBoard();
+    }
     
     t1.join();
     t2.join();
-    t3.join();
 
     return 0;
 }
