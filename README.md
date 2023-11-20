@@ -18,15 +18,14 @@ Linux :
 ```
 git clone git@github.com:EpitechPromo2026/B-AIA-500-LYN-5-1-gomoku-nathan.donat-filliod.git
 cd B-AIA-500-LYN-5-1-gomoku-nathan.donat-filliod
-mkdir build
-cd build
-cmake ..
 make
 ```
 
 Windows :
 ```
-
+git clone https://github.com/EpitechPromo2026/B-AIA-500-LYN-5-1-gomoku-nathan.donat-filliod.git
+cd B-AIA-500-LYN-5-1-gomoku-nathan.donat-filliod
+make
 ```
 
 ## Launch the brain
@@ -38,7 +37,7 @@ Linux :
 
 Windows :
 ```
-
+./pbrain-gomoku-ai.exe
 ```
 
 # Protocol 
