@@ -18,6 +18,7 @@ void Parser::Compute(Bitboard &arg_board, std::string &arg_input)
     }
     if (arg_input.substr(0, 5) == "START") {
         C_start(arg_board, arg_input);
+        std::cout << "OK" << std::endl;
         return;
     }
     if (arg_input.substr(0, 5) == "BEGIN") {
@@ -37,7 +38,6 @@ void Parser::Compute(Bitboard &arg_board, std::string &arg_input)
     }
     if (arg_input.substr(0, 4) == "EVAL") {
         MinMax min_max(&arg_board);
-        std::cout << "Croix: " << min_max.evaluatePosition(true)  << " vs Rond: " << min_max.evaluatePosition(false)  <<std::endl;
         return;
     }
 }
