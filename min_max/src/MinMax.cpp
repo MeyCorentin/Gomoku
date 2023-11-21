@@ -34,7 +34,7 @@ node MinMax::findBestMove()
             result_defense.position = temp.position;
         }
     }
-    if (result_defense.score >= result_attack.score)
+    if (result_defense.score < result_attack.score)
     {
         auto it = std::find(_scores_defense.begin(), _scores_defense.end(), result_defense);
         if (it != _scores_defense.end())
