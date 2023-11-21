@@ -6,11 +6,11 @@
 #pragma once
 
 class Bitboard {
-    std::vector<std::bitset<2>> board_;
     int size_;
     int row_size_;
 
     public:
+    std::vector<std::bitset<2>> board_;
 
     Bitboard();
     Bitboard(int size);
@@ -20,6 +20,8 @@ class Bitboard {
     int getSize();
     int getRowSize();
     std::vector<std::bitset<2>> getBitboard();
+
+    Bitboard(const Bitboard& other);
 
     int getBit(std::pair<int, int> position) const;
 

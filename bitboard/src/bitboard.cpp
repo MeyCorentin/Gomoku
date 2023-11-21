@@ -13,6 +13,12 @@ void Bitboard::reSize(int size)
     row_size_ = size;
 }
 
+Bitboard::Bitboard(const Bitboard& other) {
+    board_ = other.board_;
+    size_ = other.size_;
+    row_size_ = other.row_size_;
+}
+
 
 void Bitboard::setBit(std::pair<int, int> position, int color) {
     int index = position.first + position.second * row_size_;

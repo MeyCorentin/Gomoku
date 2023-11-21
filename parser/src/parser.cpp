@@ -35,4 +35,9 @@ void Parser::Compute(Bitboard &arg_board, std::string &arg_input)
         min_max.displayScore();
         return;
     }
+    if (arg_input.substr(0, 4) == "EVAL") {
+        MinMax min_max(&arg_board);
+        std::cout << "Croix: " << min_max.evaluatePosition(true)  << " vs Rond: " << min_max.evaluatePosition(false)  <<std::endl;
+        return;
+    }
 }

@@ -35,7 +35,19 @@ node MinMax::findBestMove()
         }
     }
     if (result_defense.score >= result_attack.score)
+    {
+        auto it = std::find(_scores_defense.begin(), _scores_defense.end(), result_defense);
+        if (it != _scores_defense.end())
+        {
+            _scores_defense.erase(it);
+        }
         return result_defense;
+    }
+    auto it = std::find(_scores_attack.begin(), _scores_attack.end(), result_attack);
+    if (it != _scores_attack.end())
+    {
+        _scores_attack.erase(it);
+    }
     return result_attack;
 }
 
@@ -179,10 +191,21 @@ std::pair<int, int> MinMax::playTurn()
 {
     getScoreInMap();
 
-    node result = findBestMove();
+    std::vector<node> result;
+    std::vector<int> evaluation;
+    for (int k= 0; k != 10 ; k++)
+        result.push_back(findBestMove());
 
-    // std::cout << "Result : " << result.score << std::endl;
+    for (auto& node : result)
+    {
+        Bitboard temp_board;
+        temp_board.reSize(_bitboard->getRowSize());
+        MinMax temp_minmax(&temp_board);
+        temp_minmax._bitboard->setBit(node.position, 2);
+        evaluation.push_back(temp_minmax.evaluatePosition(true));
+    }
 
-    // std::cout << "SUGGEST [" << position.first << "] [" << position.second << "]" << std::endl;
-    return std::make_pair(result.position.first, result.position.second);
+    auto max_eval = std::max_element(evaluation.begin(), evaluation.end());
+    int max_index = std::distance(evaluation.begin(), max_eval);
+    return result[max_index].position;
 }

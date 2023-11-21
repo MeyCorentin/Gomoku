@@ -26,7 +26,9 @@ src = main.cpp \
       parser/src/commandes/start.cpp \
       parser/src/commandes/turn.cpp \
       parser/src/commandes/begin.cpp \
-      parser/src/commandes/error.cpp
+      parser/src/commandes/error.cpp \
+      min_max/src/MinMaxEvaluation.cpp 
+
 
 NAME = pbrain-gomoku-ai$(EXE)
 OBJ = ${src:.cpp=.o}
