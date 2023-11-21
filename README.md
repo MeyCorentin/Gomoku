@@ -12,6 +12,18 @@ Windows :
 
 ```
 
+### Bonus prerequises : 
+```
+wget https://github.com/SFML/SFML/archive/2.6.1.tar.gz
+tar -xzf 2.6.1.tar.gz
+cd SFML-2.6.1
+mkdir build
+cd build
+cmake ..
+sudo make install
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+```
+
 ## Compilation
 
 Linux :
