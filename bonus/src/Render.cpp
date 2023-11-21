@@ -17,19 +17,22 @@ void Render::createBoard(int size)
 {
     std::vector<std::vector<sf::RectangleShape>> temp_board;
 
-    size += 1;
+    size -= 1;
 
-    _sizeCase = _windowSize / size - 1;
-    _sizePiece = (_windowSize / size - 1) / 2;
+    _sizeCase = _windowSize / (size + 2);
+    _sizePiece = (_windowSize / (size + 2)) / 2;
+    _sizeMarge = _sizeCase / 2;
 
     for (int i = 0; i < size; i++) {
         std::vector<sf::RectangleShape> temp_line;
         for (int j = 0; j < size; j++) {
             sf::RectangleShape rectangle(sf::Vector2f(_sizeCase, _sizeCase));
-            sf::Vector2f position = {(float)(i * (_sizeCase + 1)), (float)(j * (_sizeCase + 1))};
+            sf::Vector2f position = {(float)(i * (_sizeCase + 1) + _sizeMarge), (float)(j * (_sizeCase + 1) + _sizeMarge)};
             sf::Color color = {201,150,60,100};
             rectangle.setPosition(position);
             rectangle.setFillColor(color);
+            rectangle.setOutlineThickness(1.f);
+            rectangle.setOutlineColor(sf::Color::Black);
             temp_line.push_back(rectangle);
         }
         temp_board.push_back(temp_line);
@@ -44,8 +47,8 @@ void Render::updateBoard()
         for (int j = 0; j < _bitboard->getRowSize(); j++) {
             int color = _bitboard->getBit(std::make_pair(j, i));
             if (color != 0) {
-                sf::CircleShape piece(_sizePiece); //Todo change size
-                sf::Vector2f position = {(float)((i * (_sizeCase + 1)) - _sizePiece), (float)((j * (_sizeCase + 1) - _sizePiece))};
+                sf::CircleShape piece(_sizePiece);
+                sf::Vector2f position = {(float)(((i - 1) * (_sizeCase + 1)) - _sizePiece + _sizeMarge), (float)(((j - 1) * (_sizeCase + 1) - _sizePiece + _sizeMarge))};
                 piece.setPosition(position);
                 if (color == 1)
                     piece.setFillColor(sf::Color::Black);
@@ -72,7 +75,7 @@ void Render::drawBoard()
 
 void Render::refreshWindow()
 {
-    _window.clear();
+    _window.clear({201,150,60,100});
 }
 
 void Render::closeWindow()

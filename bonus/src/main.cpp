@@ -47,7 +47,7 @@ int main() {
     std::thread t1(readInput, &parser_, &bitBoard);
     std::thread t2(writeOutput, &brain_, &bitBoard);
 
-    while (!stop_bool) {
+    while (!stop_bool) { //Todo fix segfault
         myRender.refreshWindow();
         myRender.checkInputs();
         myRender.updateBoard();

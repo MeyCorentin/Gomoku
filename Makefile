@@ -83,6 +83,6 @@ test: mr_clean
 	mr_clean
 
 bonus: $(BONUS_OBJ)
-	$(CXX) -o $(BONUS_NAME) $(bonus_src) -I include $(CXXFLAGS) -Wall -g3 $(SFML)
+	$(CXX) $(SFML) -o $(BONUS_NAME) $(bonus_src) -I include $(CXXFLAGS) -Wall -g3
 
 .PHONY: re fclean clean all

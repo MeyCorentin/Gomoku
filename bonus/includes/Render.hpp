@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
 #pragma once
 
@@ -16,6 +17,7 @@ class Render {
         int _windowSize;
         int _sizeCase;
         int _sizePiece;
+        int _sizeMarge;
         Bitboard *_bitboard;
 
     public:
