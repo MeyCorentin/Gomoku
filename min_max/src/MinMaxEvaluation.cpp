@@ -296,8 +296,6 @@ int MinMax::evaluatePosition(bool attack)
     int x_size = 0;
     int y_size = 0;
     int board_count_ = 0;
-    int attack_score = 0;
-    int defense_score = 0;
     std::pair<int, int> position;
     for (y_size = 0; y_size < _bitboard->getRowSize();y_size++) {
         for (x_size = 0; x_size < _bitboard->getRowSize(); x_size++)

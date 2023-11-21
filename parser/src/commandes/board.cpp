@@ -4,6 +4,7 @@ void Parser::C_board(Bitboard &arg_board, std::string &arg_input)
 {
     if (arg_input.substr(0, 4) == "DONE") {
         on_board_creation = false;
+        C_turn(arg_board, arg_input);
     }
     if (on_board_creation == true)
     {
