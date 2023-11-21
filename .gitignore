@@ -1,4 +1,6 @@
 pbrain-gomoku-ai
 pbrain-gomoku-ai.exe
+pbrain-gomoku-ai-bonus
+pbrain-gomoku-ai-bonus.exe
 *.o
 .vscode

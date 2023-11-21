@@ -30,8 +30,24 @@ src = main.cpp \
       min_max/src/MinMaxEvaluation.cpp 
 
 
+bonus_src = bonus/src/main.cpp \
+			bonus/src/Render.cpp	\
+			bitboard/src/bitboard.cpp \
+			brain/src/brain.cpp \
+			min_max/src/MinMax.cpp \
+			parser/src/parser.cpp \
+			parser/src/commandes/board.cpp \
+			parser/src/commandes/start.cpp \
+			parser/src/commandes/turn.cpp \
+			parser/src/commandes/begin.cpp \
+			parser/src/commandes/error.cpp
+
 NAME = pbrain-gomoku-ai$(EXE)
+BONUS_NAME = pbrain-gomoku-ai-bonus$(EXE)
 OBJ = ${src:.cpp=.o}
+BONUS_OBJ = $(bonus_src:.cpp=.o)
+
+SFML = -lsfml-graphics -lsfml-window -lsfml-system
 
 $(NAME): $(OBJ)
 	$(CXX) -o $(NAME) $(src) -I include $(CXXFLAGS) -Wall -g3
@@ -65,5 +81,8 @@ test: mr_clean
 	gcovr --exclude tests/
 	gcovr --exclude tests/ --branches
 	mr_clean
+
+bonus: $(BONUS_OBJ)
+	$(CXX) -o $(BONUS_NAME) $(bonus_src) -I include $(CXXFLAGS) -Wall -g3 $(SFML)
 
 .PHONY: re fclean clean all
