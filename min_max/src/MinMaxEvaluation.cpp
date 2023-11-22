@@ -315,7 +315,7 @@ int MinMax::evaluateCell(std::pair<int, int> position, std::pair<int,int> direct
     if (fourOpen(position, direction))
         score +=   is_begin ? 300000 : 30000;
     if (fourClose(position, direction))
-        score +=  is_begin ? 30000 : 3000;
+        score += 30000;
     if (threeOpen(position, direction))
         score += 300;
     if (fourSplit(position, direction))
