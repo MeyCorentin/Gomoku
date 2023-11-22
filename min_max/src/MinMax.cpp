@@ -301,7 +301,7 @@ std::pair<int, int> MinMax::playTurn()
         if (evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score >= 300000000)
             return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].position;
     } else { 
-        if (evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score >= 300000000)
+        if (evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score >= 3000000)
             return evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].position;
     }
     if (evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score < 0)
