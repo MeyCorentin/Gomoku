@@ -40,7 +40,8 @@ bonus_src = bonus/src/main.cpp \
 			parser/src/commandes/start.cpp \
 			parser/src/commandes/turn.cpp \
 			parser/src/commandes/begin.cpp \
-			parser/src/commandes/error.cpp
+			parser/src/commandes/error.cpp \
+			min_max/src/MinMaxEvaluation.cpp
 
 NAME = pbrain-gomoku-ai$(EXE)
 BONUS_NAME = pbrain-gomoku-ai-bonus$(EXE)
@@ -57,10 +58,12 @@ all: $(NAME)
 
 clean:
 	$(RM) $(OBJ)
+	$(RM) $(BONUS_OBJ)
 	@echo 'Temporary files deleted'
 
 fclean: clean
 	$(RM) $(NAME)
+	$(RM) $(BONUS_NAME)
 	$(RM) unit_tests
 	@echo 'Executable deleted'
 
@@ -83,6 +86,6 @@ test: mr_clean
 	mr_clean
 
 bonus: $(BONUS_OBJ)
-	$(CXX) -o $(BONUS_NAME) $(bonus_src) -I include $(CXXFLAGS) -Wall -g3 $(SFML)
+	$(CXX) $(SFML) -o $(BONUS_NAME) $(bonus_src) -I include $(CXXFLAGS) -Wall -g3
 
 .PHONY: re fclean clean all
