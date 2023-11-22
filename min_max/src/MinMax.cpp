@@ -34,7 +34,7 @@ node MinMax::findBestMove()
             result_defense.position = temp.position;
         }
     }
-    if (result_defense.score < result_attack.score)
+    if (result_defense.score > result_attack.score)
     {
         auto it = std::find(_scores_defense.begin(), _scores_defense.end(), result_defense);
         if (it != _scores_defense.end())
@@ -74,7 +74,7 @@ double MinMax::recurseScore(double score_, int depth, std::pair<int, int> positi
 }
 
 
-int MinMax::spaceFree(std::pair<int, int> position, std::pair<int,int> direction, bool attack)
+int MinMax::spaceFree(std::pair<int, int> position, std::pair<int,int> direction)
 {
     position.first += direction.first;
     position.second += direction.second;
@@ -84,28 +84,28 @@ int MinMax::spaceFree(std::pair<int, int> position, std::pair<int,int> direction
     if (color != 0)
         return 0;
     else
-        return (1 + spaceFree(position, direction, attack));
+        return (1 + spaceFree(position, direction));
 
 }
 
-int MinMax::pionNumberInDirection(std::pair<int, int> position, std::pair<int,int> direction, bool attack)
+int MinMax::pionNumberInDirection(std::pair<int, int> position, std::pair<int,int> direction)
 {
     position.first += direction.first;
     position.second += direction.second;
     if (position.first > (_bitboard->getRowSize() - 1) || (position.second > _bitboard->getRowSize() - 1) || position.first < 0 || position.second < 0)
         return 0;
     int color = _bitboard->getBit(position);
-    if (color != (attack? 2 : 1))
+    if (color != (is_begin ? 2 : 1))
         return 0;
     else
-        return (1 + pionNumberInDirection(position, direction, attack));
+        return (1 + pionNumberInDirection(position, direction));
 
 }
 
 int MinMax::maxPossibleLine(std::pair<int, int> position, std::pair<int,int> direction, bool attack)
 {
-    int pion_number = pionNumberInDirection(position, std::make_pair(-direction.first, -direction.second), attack);
-    int space_free = spaceFree(position, direction, attack);
+    int pion_number = pionNumberInDirection(position, std::make_pair(-direction.first, -direction.second));
+    int space_free = spaceFree(position, direction);
     return pion_number + space_free;
 }
 
@@ -193,16 +193,28 @@ std::pair<int, int> MinMax::playTurn()
 
     std::vector<node> result;
     std::vector<int> evaluation;
-    for (int k= 0; k != 10 ; k++)
+    for (int k = 0; k != 10; k++)
         result.push_back(findBestMove());
 
     for (auto& node : result)
     {
-        Bitboard temp_board;
-        temp_board.reSize(_bitboard->getRowSize());
-        MinMax temp_minmax(&temp_board);
-        temp_minmax._bitboard->setBit(node.position, 2);
-        evaluation.push_back(temp_minmax.evaluatePosition(true));
+        Bitboard temp_board_1(*_bitboard);
+        MinMax temp_minmax_1(&temp_board_1);
+        temp_minmax_1.is_begin = true;
+        temp_minmax_1._bitboard->setBit(node.position, is_begin ? 0 : 1);
+
+
+        Bitboard temp_board_2(*_bitboard);
+        MinMax temp_minmax_2(&temp_board_2);
+        temp_minmax_2.is_begin = false;
+        temp_minmax_2._bitboard->setBit(node.position,  is_begin ? 1 : 0);
+        // std::cout <<"-------------" << std::endl;
+        // temp_minmax_1._bitboard->displayBoard();
+        // std::cout <<"-----" << std::endl;
+        // temp_minmax_2._bitboard->displayBoard();
+        // std::cout << "ATTACH: "<< temp_minmax_1.evaluatePosition() << std::endl;
+        // std::cout << "DEFENSE: "<< temp_minmax_2.evaluatePosition() << std::endl;
+        evaluation.push_back(temp_minmax_1.evaluatePosition() > temp_minmax_2.evaluatePosition() ? temp_minmax_1.evaluatePosition() : temp_minmax_2.evaluatePosition()  );
     }
 
     auto max_eval = std::max_element(evaluation.begin(), evaluation.end());

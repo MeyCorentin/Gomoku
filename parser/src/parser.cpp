@@ -38,6 +38,8 @@ void Parser::Compute(Bitboard &arg_board, std::string &arg_input)
     }
     if (arg_input.substr(0, 4) == "EVAL") {
         MinMax min_max(&arg_board);
+        std::cout << min_max.evaluatePosition() << std::endl;
+        std::cout << min_max.evaluatePosition() << std::endl;
         return;
     }
 }
