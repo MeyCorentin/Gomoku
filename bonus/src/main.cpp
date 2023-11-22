@@ -38,9 +38,8 @@ int main() {
     Parser parser_;
     Brain brain_;
     Bitboard bitBoard;
-    Render myRender;
+    Render myRender(&bitBoard, &parser_);
 
-    myRender.createBoard(20);
 
     std::promise<void> exitSignal;
     std::future<void> futureObj = exitSignal.get_future();
@@ -50,7 +49,13 @@ int main() {
     while (!stop_bool) {
         myRender.refreshWindow();
         myRender.checkInputs();
-        myRender.drawBoard();
+        if (myRender.boardIsCreate()) {
+            myRender.updateBoard();
+            myRender.drawBoard();
+        } else {
+            if (bitBoard.getRowSize() != 0)
+                myRender.createBoard(bitBoard.getRowSize());
+        }
     }
     
     t1.join();

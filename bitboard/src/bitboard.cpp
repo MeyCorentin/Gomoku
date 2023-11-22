@@ -1,6 +1,10 @@
 #include "../includes/bitboard.hpp"
 
-Bitboard::Bitboard()  {}
+Bitboard::Bitboard()
+{
+    row_size_ = 0;
+}
+
 Bitboard::Bitboard(int size) : board_(size * size), size_(size * size), row_size_(size) {}
 
 void Bitboard::reSize(int size)
