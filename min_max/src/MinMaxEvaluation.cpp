@@ -30,10 +30,10 @@ bool MinMax::fiveEnd(std::pair<int, int> position, std::pair<int,int> direction)
         position.first - (direction.first) < 0 ||
         position.second - (direction.second) < 0)
         return false;
-    if (position.first + (direction.first * 5) >= (_bitboard->getRowSize()) ||
-        (position.second + (direction.second * 5) >= _bitboard->getRowSize()) ||
-        position.first + (direction.first * 5) < 0 ||
-        position.second + (direction.second * 5) < 0)
+    if (position.first + (direction.first * 4) >= (_bitboard->getRowSize()) ||
+        (position.second + (direction.second * 4) >= _bitboard->getRowSize()) ||
+        position.first + (direction.first * 4) < 0 ||
+        position.second + (direction.second * 4) < 0)
         return false;
     if (
         pionNumberInDirection(position, direction) == 5
@@ -336,7 +336,7 @@ int MinMax::evaluateCell(std::pair<int, int> position, std::pair<int,int> direct
 {
     int score = 0;
     if (fiveEnd(position, direction))
-        score += 300000000;
+        score +=  is_begin ? 300000000 : 3000000;
     if (fourOpen(position, direction))
         score +=   is_begin ? 300000 : 30000;
     if (fourClose(position, direction))
@@ -350,7 +350,7 @@ int MinMax::evaluateCell(std::pair<int, int> position, std::pair<int,int> direct
     if (threeTwoOne(position, direction))
         score += 30;
     if (threeClose(position, direction))
-        score += 3;
+        score += 30;
     if (threeSplit(position, direction))
         score += 3;
     if (threeJump(position, direction))
