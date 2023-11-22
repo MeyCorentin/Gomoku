@@ -38,7 +38,7 @@ int main() {
     Parser parser_;
     Brain brain_;
     Bitboard bitBoard;
-    Render myRender(&bitBoard);
+    Render myRender(&bitBoard, &parser_);
 
     myRender.createBoard(20);
 

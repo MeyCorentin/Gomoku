@@ -6,6 +6,7 @@
 #pragma once
 
 #include "../../bitboard/includes/bitboard.hpp"
+#include "../../parser/includes/parser.hpp"
 
 class Render {
     private:
@@ -19,9 +20,10 @@ class Render {
         int _sizePiece;
         int _sizeMarge;
         Bitboard *_bitboard;
+        Parser *_parser;
 
     public:
-        Render(Bitboard *board);
+        Render(Bitboard *board, Parser *parser);
         ~Render();
 
         void createBoard(int size);

@@ -1,10 +1,11 @@
 #include "../includes/Render.hpp"
 
-Render::Render(Bitboard *board)
+Render::Render(Bitboard *board, Parser *parser)
 {
     _windowSize = 800;
     _window.create(sf::VideoMode(_windowSize, _windowSize), "Gomoku");
     _bitboard = board;
+    _parser = parser;
     _sizePiece = 0;
 }
 
@@ -91,7 +92,10 @@ void Render::checkInputs()
         if (_event.type == sf::Event::MouseButtonReleased) {
             if (_event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(_window);
-                std::cout << "Position : " << mousePosition.x << "," << mousePosition.y << std::endl;
+                std::string turn = "TURN 3 3";
+                std::cout << "Before" << std::endl;
+                _parser->C_turn(*_bitboard, turn);
+                std::cout << "After" << std::endl;
             }
         }
     }
