@@ -52,6 +52,7 @@ class MinMax {
         std::pair<int, int> depthMinMax(int depth, MinMax min_max, bool attack);
         bool fiveEnd(std::pair<int, int> position, std::pair<int,int> direction);
         bool twoClose(std::pair<int, int> position, std::pair<int,int> direction);
+        int recurseScore(MinMax current_min_max, int deepth);
         bool is_begin = false;
     private:
             Bitboard *_bitboard;
