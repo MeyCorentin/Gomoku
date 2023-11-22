@@ -65,7 +65,7 @@ void Render::updateBoard()
             int color = _bitboard->getBit(std::make_pair(j, i));
             if (color != 0) {
                 sf::CircleShape piece(_sizePiece);
-                sf::Vector2f position = {(float)(((i - 1) * (_sizeCase + 1)) - _sizePiece + _sizeMarge), (float)(((j - 1) * (_sizeCase + 1) - _sizePiece + _sizeMarge))};
+                sf::Vector2f position = {(float)(((i) * (_sizeCase + 1)) - _sizePiece + _sizeMarge), (float)(((j) * (_sizeCase + 1) - _sizePiece + _sizeMarge))};
                 piece.setPosition(position);
                 if (color == 1)
                     piece.setFillColor(sf::Color::Black);
@@ -133,7 +133,7 @@ void Render::checkInputs()
                         (*piece_board).setFillColor(sf::Color({255,0,0,100}));
                         if (_event.type == sf::Event::MouseButtonReleased) {
                             if (_event.mouseButton.button == sf::Mouse::Left) {
-                                std::string turn = "TURN " + std::to_string(j) + "," + std::to_string(i); //Todo change by a ,
+                                std::string turn = "TURN " + std::to_string(j - 1) + "," + std::to_string(i - 1); //Todo change by a ,
                                 _parser->C_turn(*_bitboard, turn);
                             }
                         }
