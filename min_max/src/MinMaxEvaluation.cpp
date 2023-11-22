@@ -232,9 +232,9 @@ bool MinMax::threeOpen(std::pair<int, int> position, std::pair<int,int> directio
         position.second + (direction.second * 3) < 0)
         return false;
     if (
-        _bitboard->getBit(std::make_pair(position.first - direction.first, position.second - direction.second)) == 0 &&
-        pionNumberInDirection(position, direction) == 2 &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 3), position.second + (direction.second * 3))) == 0
+        _bitboard->getBit(std::make_pair(position.first, position.second )) == 0 &&
+        pionNumberInDirection(position, direction) == 3 &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 4), position.second + (direction.second * 4))) == 0
         )
         return true;
     return false;
