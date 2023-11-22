@@ -42,17 +42,42 @@ bool MinMax::fiveEnd(std::pair<int, int> position, std::pair<int,int> direction)
     return false;
 }
 
+
 bool MinMax::fourClose(std::pair<int, int> position, std::pair<int,int> direction)
 {
-    if (position.first - (direction.first) >= (_bitboard->getRowSize()) ||
+    if (
+        (position.first - (direction.first) >= (_bitboard->getRowSize()) ||
         (position.second - (direction.second) >= _bitboard->getRowSize()) ||
         position.first - (direction.first) < 0 ||
-        position.second - (direction.second) < 0)
-        return false;
-    if (position.first + (direction.first * 5) >= (_bitboard->getRowSize()) ||
+        position.second - (direction.second) < 0) &&
+        pionNumberInDirection(position, direction) == 4 &&
+        _bitboard->getBit(std::make_pair(position.first , position.second)) == 0
+        )
+        return true;
+
+    if (
+        (position.first + (direction.first * 5) >= (_bitboard->getRowSize()) ||
         (position.second + (direction.second * 5) >= _bitboard->getRowSize()) ||
         position.first + (direction.first * 5) < 0 ||
-        position.second + (direction.second * 5) < 0)
+        position.second + (direction.second * 5) < 0) &&
+        pionNumberInDirection(position, direction) == 4 &&
+        _bitboard->getBit(std::make_pair(position.first , position.second)) == 0
+        )
+        return true;
+    if (
+        position.first - (direction.first) >= (_bitboard->getRowSize()) ||
+        (position.second - (direction.second) >= _bitboard->getRowSize()) ||
+        position.first - (direction.first) < 0 ||
+        position.second - (direction.second) < 0
+        )
+        return false;
+
+    if (
+        position.first + (direction.first * 5) >= (_bitboard->getRowSize()) ||
+        (position.second + (direction.second * 5) >= _bitboard->getRowSize()) ||
+        position.first + (direction.first * 5) < 0 ||
+        position.second + (direction.second * 5) < 0
+        )
         return false;
     if (
         _bitboard->getBit(std::make_pair(position.first + (direction.first * 5), position.second + (direction.second * 5))) == (is_begin ? 1 : 2) &&
@@ -315,7 +340,7 @@ int MinMax::evaluateCell(std::pair<int, int> position, std::pair<int,int> direct
     if (fourOpen(position, direction))
         score +=   is_begin ? 300000 : 30000;
     if (fourClose(position, direction))
-        score += 30000;
+        score +=  is_begin ? 30000 : 3000;
     if (threeOpen(position, direction))
         score += 300;
     if (fourSplit(position, direction))
