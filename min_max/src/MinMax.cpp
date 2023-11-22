@@ -98,7 +98,7 @@ int MinMax::pionNumberInDirection(std::pair<int, int> position, std::pair<int,in
     if (color != (is_begin ? 2 : 1))
         return 0;
     else
-        return (pionNumberInDirection(position, direction));
+        return (1 + pionNumberInDirection(position, direction));
 
 }
 
