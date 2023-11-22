@@ -8,8 +8,8 @@ void Parser::C_turn(Bitboard &arg_board, std::string &arg_input)
     char delimiter;
     int x, y;
     iss >> cmd >> x >> delimiter >> y;
-    arg_board.setBit(std::make_pair(x, y), 0);
+    arg_board.setBit(std::make_pair(x, y), is_begin ? 1  : 0);
     std::pair<int, int> brain_play = min_max.playTurn();
-    arg_board.setBit(brain_play , 1);
+    arg_board.setBit(brain_play , is_begin ? 0 : 1);
     std::cout <<brain_play.first <<"," << brain_play.second << std::endl;
 }

@@ -4,7 +4,7 @@ void Parser::C_board(Bitboard &arg_board, std::string &arg_input)
 {
     if (arg_input.substr(0, 4) == "DONE") {
         on_board_creation = false;
-        C_begin(arg_board, arg_input);
+        C_turn(arg_board, arg_input);
     }
     if (on_board_creation == true)
     {
@@ -13,7 +13,6 @@ void Parser::C_board(Bitboard &arg_board, std::string &arg_input)
         int x, y, value;
         iss >> x >> delimiter >> y >> delimiter >> value;
         arg_board.setBit(std::make_pair(x , y), value - 1);
-        (value - 1 == 0 ? begin_value = 1: begin_value = 0);
     }
     if (arg_input.substr(0, 5) == "BOARD") {
         on_board_creation = true;

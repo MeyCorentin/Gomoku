@@ -10,7 +10,7 @@
 
 struct node
 {
-    double score;
+    int score;
     int i;
     std::pair<int, int> position;
     bool operator==(const node& other) const {
@@ -29,7 +29,7 @@ class MinMax {
         void getScoreInMap();
         void displayScore();
 
-        double updateScore(std::pair<int, int> position, bool attack);
+        int updateScore(std::pair<int, int> position, bool attack);
         std::pair<int,int> playTurn();
         double recurseScore(double score_, int depth, std::pair<int, int> position, std::pair<int, int> direction, bool attack);
         int maxPossibleLine(std::pair<int, int> position, std::pair<int,int> direction, bool attack);
