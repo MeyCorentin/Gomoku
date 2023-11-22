@@ -267,12 +267,20 @@ std::pair<int, int> MinMax::playTurn()
         MinMax temp_minmax_2(&temp_board_2);
         temp_minmax_2.is_begin = false;
         temp_minmax_2._bitboard->setBit(node_.position,  is_begin ? 1 : 0);
+
+        // std::cout << "-----------" << std::endl;
+        // temp_minmax_1._bitboard->displayBoard();
+        // std::cout << "---" << std::endl;
+        // temp_minmax_2._bitboard->displayBoard();
+
         if (temp_minmax_1.evaluatePosition() >= temp_minmax_2.evaluatePosition())
         {
+        // std::cout << "ATTACK: " <<(double)temp_minmax_1.evaluatePosition()  << std::endl;
             evaluation_attack.push_back(node{(double)temp_minmax_1.evaluatePosition() +  recurseScore(temp_minmax_1, 0) / 4,(int)evaluation_defense.size() + 1, node_.position});
         }
         else
         {
+            // std::cout << "ATTACK: " <<(double)temp_minmax_2.evaluatePosition()  << std::endl;
             evaluation_defense.push_back(node{(double) temp_minmax_2.evaluatePosition() + recurseScore(temp_minmax_2, 0) / 4, (int)evaluation_defense.size() + 1, node_.position});
         }
     }
@@ -288,10 +296,9 @@ std::pair<int, int> MinMax::playTurn()
         return evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].position;
     if (evaluation_defense.size() == 0)
         return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].position;
-
-    if (evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score <0)
+    if (evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score < 0)
         return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].position;
-    if (evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score <0)
+    if (evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score < 0)
         return evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].position;
     if (evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score >= evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score)
         return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].position;

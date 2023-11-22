@@ -2,8 +2,8 @@
 
 bool MinMax::fourOpen(std::pair<int, int> position, std::pair<int,int> direction)
 {
-    if (position.first - (direction.first) >= (_bitboard->getRowSize()) ||
-        (position.second - (direction.second ) >= _bitboard->getRowSize()) ||
+    if (position.first - (direction.first) > (_bitboard->getRowSize()) ||
+        (position.second - (direction.second ) > _bitboard->getRowSize()) ||
         position.first - (direction.first) <= 0 ||
         position.second - (direction.second) <= 0)
         return false;
@@ -25,8 +25,8 @@ bool MinMax::fourOpen(std::pair<int, int> position, std::pair<int,int> direction
 
 bool MinMax::fiveEnd(std::pair<int, int> position, std::pair<int,int> direction)
 {
-    if (position.first - (direction.first) >= (_bitboard->getRowSize()) ||
-        (position.second - (direction.second ) >= _bitboard->getRowSize()) ||
+    if (position.first - (direction.first) > (_bitboard->getRowSize()) ||
+        (position.second - (direction.second ) > _bitboard->getRowSize()) ||
         position.first - (direction.first) < 0 ||
         position.second - (direction.second) < 0)
         return false;
@@ -96,15 +96,15 @@ bool MinMax::fourClose(std::pair<int, int> position, std::pair<int,int> directio
 
 bool MinMax::fourSplit(std::pair<int, int> position, std::pair<int,int> direction)
 {
-    if (position.first - (direction.first) >= (_bitboard->getRowSize()) ||
-        (position.second - (direction.second) >= _bitboard->getRowSize()) ||
+    if (position.first - (direction.first) > (_bitboard->getRowSize()) ||
+        (position.second - (direction.second) > _bitboard->getRowSize()) ||
         position.first - (direction.first) < 0 ||
         position.second - (direction.second) < 0)
         return false;
-    if (position.first + (direction.first * 4) >= (_bitboard->getRowSize()) ||
-        (position.second + (direction.second * 4) >= _bitboard->getRowSize()) ||
-        position.first + (direction.first * 4) < 0 ||
-        position.second + (direction.second * 4) < 0)
+    if (position.first + (direction.first * 5) >= (_bitboard->getRowSize()) ||
+        (position.second + (direction.second * 5) >= _bitboard->getRowSize()) ||
+        position.first + (direction.first * 5) < 0 ||
+        position.second + (direction.second * 5) < 0)
         return false;
     if (
         _bitboard->getBit(std::make_pair(position.first - direction.first, position.second - direction.second)) == (is_begin ? 1 : 2) &&
@@ -125,8 +125,8 @@ bool MinMax::fourSplit(std::pair<int, int> position, std::pair<int,int> directio
 
 bool MinMax::threeSplit(std::pair<int, int> position, std::pair<int,int> direction)
 {
-    if (position.first - (direction.first) >= (_bitboard->getRowSize()) ||
-        (position.second - (direction.second) >= _bitboard->getRowSize()) ||
+    if (position.first - (direction.first) > (_bitboard->getRowSize()) ||
+        (position.second - (direction.second) > _bitboard->getRowSize()) ||
         position.first - (direction.first) < 0 ||
         position.second - (direction.second) < 0)
         return false;
@@ -154,8 +154,8 @@ bool MinMax::threeSplit(std::pair<int, int> position, std::pair<int,int> directi
 
 bool MinMax::threeBlock(std::pair<int, int> position, std::pair<int,int> direction)
 {
-    if (position.first - (direction.first * 2) >= (_bitboard->getRowSize()) ||
-        (position.second - (direction.second * 2) >= _bitboard->getRowSize()) ||
+    if (position.first - (direction.first * 2) > (_bitboard->getRowSize()) ||
+        (position.second - (direction.second * 2) > _bitboard->getRowSize()) ||
         position.first - (direction.first * 2) < 0 ||
         position.second - (direction.second * 2) < 0)
         return false;
@@ -183,8 +183,8 @@ bool MinMax::threeBlock(std::pair<int, int> position, std::pair<int,int> directi
 
 bool MinMax::threeTwoOne(std::pair<int, int> position, std::pair<int,int> direction)
 {
-    if (position.first - (direction.first) >= (_bitboard->getRowSize()) ||
-        (position.second - (direction.second) >= _bitboard->getRowSize()) ||
+    if (position.first - (direction.first) > (_bitboard->getRowSize()) ||
+        (position.second - (direction.second) > _bitboard->getRowSize()) ||
         position.first - (direction.first) < 0 ||
         position.second - (direction.second) < 0)
         return false;
@@ -215,8 +215,8 @@ bool MinMax::threeTwoOne(std::pair<int, int> position, std::pair<int,int> direct
 
 bool MinMax::threeClose(std::pair<int, int> position, std::pair<int,int> direction)
 {
-    if (position.first - (direction.first) >= (_bitboard->getRowSize()) ||
-        (position.second - (direction.second) >= _bitboard->getRowSize()) ||
+    if (position.first - (direction.first) > (_bitboard->getRowSize()) ||
+        (position.second - (direction.second) > _bitboard->getRowSize()) ||
         position.first - (direction.first) < 0 ||
         position.second - (direction.second) < 0)
         return false;
@@ -236,8 +236,8 @@ bool MinMax::threeClose(std::pair<int, int> position, std::pair<int,int> directi
 
 bool MinMax::threeOpen(std::pair<int, int> position, std::pair<int,int> direction)
 {
-    if (position.first - (direction.first) >= (_bitboard->getRowSize()) ||
-        (position.second - (direction.second) >= _bitboard->getRowSize()) ||
+    if (position.first - (direction.first) > (_bitboard->getRowSize()) ||
+        (position.second - (direction.second) > _bitboard->getRowSize()) ||
         position.first - (direction.first) < 0 ||
         position.second - (direction.second) < 0)
         return false;
@@ -258,8 +258,8 @@ bool MinMax::threeOpen(std::pair<int, int> position, std::pair<int,int> directio
 
 bool MinMax::twoClose(std::pair<int, int> position, std::pair<int,int> direction)
 {
-    if (position.first - (direction.first) >= (_bitboard->getRowSize()) ||
-        (position.second - (direction.second)>= _bitboard->getRowSize()) ||
+    if (position.first - (direction.first) > (_bitboard->getRowSize()) ||
+        (position.second - (direction.second) > _bitboard->getRowSize()) ||
         position.first - (direction.first) < 0 ||
         position.second - (direction.second) < 0)
         return false;
@@ -287,8 +287,8 @@ bool MinMax::twoClose(std::pair<int, int> position, std::pair<int,int> direction
 
 bool MinMax::twoOpen(std::pair<int, int> position, std::pair<int,int> direction)
 {
-    if (position.first - (direction.first) >= (_bitboard->getRowSize()) ||
-        (position.second - (direction.second) >= _bitboard->getRowSize()) ||
+    if (position.first - (direction.first) > (_bitboard->getRowSize()) ||
+        (position.second - (direction.second) > _bitboard->getRowSize()) ||
         position.first - (direction.first) < 0 ||
         position.second - (direction.second) < 0)
         return false;
