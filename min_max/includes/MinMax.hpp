@@ -45,7 +45,7 @@ class MinMax {
         bool twoOpen(std::pair<int, int> position, std::pair<int,int> direction);
         bool threeClose(std::pair<int, int> position, std::pair<int,int> direction);
         bool fourSplit(std::pair<int, int> position, std::pair<int,int> direction);
-        bool threeSplit(std::pair<int, int> position, std::pair<int,int> direction);
+        bool threeTwoOneBlock(std::pair<int, int> position, std::pair<int,int> direction);
         bool threeJump(std::pair<int, int> position, std::pair<int,int> direction);
         bool threeTwoOne(std::pair<int, int> position, std::pair<int,int> direction);
         bool threeBlock(std::pair<int, int> position, std::pair<int,int> direction);

@@ -95,7 +95,7 @@ int MinMax::pionNumberInDirection(std::pair<int, int> position, std::pair<int,in
     if (position.first > (_bitboard->getRowSize() - 1) || (position.second > _bitboard->getRowSize() - 1) || position.first < 0 || position.second < 0)
         return 0;
     int color = _bitboard->getBit(position);
-    if (color != (is_begin ? 2 : 1))
+    if (color != (is_begin ? 1 : 2))
         return 0;
     else
         return (1 + pionNumberInDirection(position, direction));
@@ -235,10 +235,19 @@ int MinMax::recurseScore(MinMax current_min_max, int deepth)
     auto max_eval_defense = std::max_element(evaluation_defense.begin(), evaluation_defense.end(), [](const node& a, const node& b) {
         return a.score < b.score;
     });
-    if (evaluation_attack.size() == 0)
-        return evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score + recurseScore(temp_minmax_2, deepth) / 4;
-    if (evaluation_defense.size() == 0)
-        return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score  + recurseScore(temp_minmax_1, deepth) / 4;
+    if (is_begin)
+    {
+        if (evaluation_attack.size() == 0)
+            return evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score + recurseScore(temp_minmax_2, deepth) / 4;
+        if (evaluation_defense.size() == 0)
+            return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score  + recurseScore(temp_minmax_1, deepth) / 4;
+    } else {
+        if (evaluation_defense.size() == 0)
+            return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score  + recurseScore(temp_minmax_1, deepth) / 4;
+        if (evaluation_attack.size() == 0)
+            return evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score + recurseScore(temp_minmax_2, deepth) / 4;
+
+    }
     if (evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score >= evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score)
         return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score  + recurseScore(temp_minmax_1, deepth) / 4;
     else
@@ -252,7 +261,7 @@ std::pair<int, int> MinMax::playTurn()
     std::vector<node> result;
     std::vector<node> evaluation_defense;
     std::vector<node> evaluation_attack;
-    for (int k = 0; k != 10; k++)
+    for (int k = 0; k != 50; k++)
         result.push_back(findBestMove());
 
     for (auto& node_ : result)
@@ -262,27 +271,13 @@ std::pair<int, int> MinMax::playTurn()
         temp_minmax_1.is_begin = true;
         temp_minmax_1._bitboard->setBit(node_.position, is_begin ? 0 : 1);
 
-
         Bitboard temp_board_2(*_bitboard);
         MinMax temp_minmax_2(&temp_board_2);
         temp_minmax_2.is_begin = false;
         temp_minmax_2._bitboard->setBit(node_.position,  is_begin ? 1 : 0);
 
-        // std::cout << "-----------" << std::endl;
-        // temp_minmax_1._bitboard->displayBoard();
-        // std::cout << "---" << std::endl;
-        // temp_minmax_2._bitboard->displayBoard();
-
-        if (temp_minmax_1.evaluatePosition() >= temp_minmax_2.evaluatePosition())
-        {
-            // std::cout << "ATTACK: " <<(double)temp_minmax_1.evaluatePosition()  << std::endl;
-            evaluation_attack.push_back(node{(double)temp_minmax_1.evaluatePosition() +  recurseScore(temp_minmax_1, 0) / 4,(int)evaluation_defense.size() + 1, node_.position});
-        }
-        else
-        {
-            // std::cout << "ATTACK: " <<(double)temp_minmax_2.evaluatePosition()  << std::endl;
-            evaluation_defense.push_back(node{(double) temp_minmax_2.evaluatePosition() + recurseScore(temp_minmax_2, 0) / 4, (int)evaluation_defense.size() + 1, node_.position});
-        }
+        evaluation_attack.push_back(node{(double)temp_minmax_1.evaluatePosition() +  recurseScore(temp_minmax_1, 0) / 4,(int)evaluation_attack.size() + 1, node_.position});
+        evaluation_defense.push_back(node{(double) temp_minmax_2.evaluatePosition() + recurseScore(temp_minmax_2, 0) / 4, (int)evaluation_defense.size() + 1, node_.position});
     }
 
     auto max_eval_attack = std::max_element(evaluation_attack.begin(), evaluation_attack.end(), [](const node& a, const node& b) {
@@ -292,15 +287,25 @@ std::pair<int, int> MinMax::playTurn()
     auto max_eval_defense = std::max_element(evaluation_defense.begin(), evaluation_defense.end(), [](const node& a, const node& b) {
         return a.score < b.score;
     });
-    if (evaluation_attack.size() == 0)
-        return evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].position;
-    if (evaluation_defense.size() == 0)
-        return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].position;
 
-    if (evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score < 0)
-        return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].position;
-    if (evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score < 0)
-        return evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].position;
+
+    auto min_eval_attack = std::max_element(evaluation_attack.begin(), evaluation_attack.end(), [](const node& a, const node& b) {
+        return a.score > b.score;
+    });
+
+    auto min_eval_defense = std::max_element(evaluation_defense.begin(), evaluation_defense.end(), [](const node& a, const node& b) {
+        return a.score > b.score;
+    });
+
+    // std::cout << "----" << std::endl;
+    // std::cout << "ATTACK: " << evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score   << std::endl;
+    // std::cout << "DEFENSE: " << evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score  << std::endl;
+    // std::cout << "----" << std::endl;
+
+    if (evaluation_attack[std::distance(evaluation_attack.begin(), min_eval_attack)].score < 0)
+        return evaluation_attack[std::distance(evaluation_attack.begin(), min_eval_attack)].position;
+    if (evaluation_defense[std::distance(evaluation_defense.begin(), min_eval_defense)].score < 0)
+        return evaluation_defense[std::distance(evaluation_defense.begin(), min_eval_defense)].position;
 
     if (evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score >= evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score)
         return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].position;

@@ -14,7 +14,7 @@ bool MinMax::fourOpen(std::pair<int, int> position, std::pair<int,int> direction
         return false;
     if (
         _bitboard->getBit(std::make_pair(position.first - direction.first, position.second - direction.second)) == 0 &&
-        _bitboard->getBit(std::make_pair(position.first, position.second )) == (is_begin ? 2 : 1) &&
+        _bitboard->getBit(std::make_pair(position.first, position.second )) == (is_begin ? 1 : 2) &&
         pionNumberInDirection(position, direction) == 3 &&
         _bitboard->getBit(std::make_pair(position.first + (direction.first * 4), position.second + (direction.second * 4))) == 0
         )
@@ -26,10 +26,9 @@ bool MinMax::fourOpen(std::pair<int, int> position, std::pair<int,int> direction
 bool MinMax::fiveEnd(std::pair<int, int> position, std::pair<int,int> direction)
 {
     if (
-        _bitboard->getBit(std::make_pair(position.first , position.second)) == (is_begin ? 2 : 1) &&
+        _bitboard->getBit(std::make_pair(position.first , position.second)) == (is_begin ? 1 : 2) &&
         pionNumberInDirection(position, direction) == 4
     ) {
-        std::cout << "Five !" << std::endl;
         return true;
     }
     return false;
@@ -73,7 +72,7 @@ bool MinMax::fourClose(std::pair<int, int> position, std::pair<int,int> directio
         )
         return false;
     if (
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 5), position.second + (direction.second * 5))) == (is_begin ? 1 : 2) &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 5), position.second + (direction.second * 5))) == (is_begin ? 2 : 1) &&
         pionNumberInDirection(position, direction) == 4 &&
         _bitboard->getBit(std::make_pair(position.first , position.second)) == 0
         )
@@ -81,7 +80,7 @@ bool MinMax::fourClose(std::pair<int, int> position, std::pair<int,int> directio
     if (
         _bitboard->getBit(std::make_pair(position.first + (direction.first * 5), position.second + (direction.second * 5))) == 0 &&
         pionNumberInDirection(position, direction) == 4 &&
-        _bitboard->getBit(std::make_pair(position.first , position.second)) == (is_begin ? 1 : 2)
+        _bitboard->getBit(std::make_pair(position.first , position.second)) == (is_begin ? 2 : 1)
         )
         return true;
     return false;
@@ -116,30 +115,25 @@ bool MinMax::fourSplit(std::pair<int, int> position, std::pair<int,int> directio
     return false;
 }
 
-bool MinMax::threeSplit(std::pair<int, int> position, std::pair<int,int> direction)
+bool MinMax::threeTwoOneBlock(std::pair<int, int> position, std::pair<int,int> direction)
 {
     if (position.first - (direction.first) > (_bitboard->getRowSize()) ||
         (position.second - (direction.second) > _bitboard->getRowSize()) ||
         position.first - (direction.first) < 0 ||
         position.second - (direction.second) < 0)
         return false;
-    if (position.first + (direction.first * 4) >= (_bitboard->getRowSize()) ||
-        (position.second + (direction.second * 4) >= _bitboard->getRowSize()) ||
-        position.first + (direction.first * 4) < 0 ||
-        position.second + (direction.second * 4) < 0)
+    if (position.first + (direction.first * 5) >= (_bitboard->getRowSize()) ||
+        (position.second + (direction.second * 5) >= _bitboard->getRowSize()) ||
+        position.first + (direction.first * 5) < 0 ||
+        position.second + (direction.second * 5) < 0)
         return false;
     if (
-        _bitboard->getBit(std::make_pair(position.first - direction.first, position.second - direction.second)) == (is_begin ? 1 : 2) &&
-        pionNumberInDirection(position, direction) == 1 &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 2), position.second + (direction.second * 2))) == 0 &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 3), position.second + (direction.second * 3))) ==  (is_begin ? 2 : 1)
-        )
-        return true;
-    if (
         _bitboard->getBit(std::make_pair(position.first - direction.first, position.second - direction.second)) == 0 &&
-        _bitboard->getBit(std::make_pair(position.first + direction.first, position.second + direction.second)) == 0 &&
-        pionNumberInDirection(std::make_pair(position.first + direction.first, position.second + direction.second), direction) == 2 &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 4), position.second + (direction.second * 4))) == (is_begin ? 1 : 2)
+        _bitboard->getBit(std::make_pair(position.first + direction.first, position.second + direction.second)) == (is_begin ? 1 : 2) &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 2), position.second + ( direction.second * 2))) == 0 &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 3), position.second + ( direction.second * 3))) == (is_begin ? 1 : 2) &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 4), position.second + ( direction.second * 4))) == (is_begin ? 1 : 2) &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 5), position.second + ( direction.second * 5))) == (is_begin ? 2 : 1)
         )
         return true;
     return false;
@@ -188,18 +182,11 @@ bool MinMax::threeTwoOne(std::pair<int, int> position, std::pair<int,int> direct
         return false;
     if (
         _bitboard->getBit(std::make_pair(position.first - direction.first, position.second - direction.second)) == 0 &&
-        _bitboard->getBit(std::make_pair(position.first + direction.first, position.second + direction.second)) == (is_begin ? 2 : 1) &&
+        _bitboard->getBit(std::make_pair(position.first + direction.first, position.second + direction.second)) == (is_begin ? 1 : 2) &&
         _bitboard->getBit(std::make_pair(position.first + (direction.first * 2), position.second + ( direction.second * 2))) == 0 &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 3), position.second + ( direction.second * 3))) == (is_begin ? 2 : 1) &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 4), position.second + ( direction.second * 4))) == 0
-        )
-        return true;
-    if (
-        _bitboard->getBit(std::make_pair(position.first - direction.first, position.second - direction.second)) == 0 &&
-        _bitboard->getBit(std::make_pair(position.first + direction.first, position.second + direction.second)) == 0 &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 2), position.second + ( direction.second * 2))) == (is_begin ? 2 : 1) &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 3), position.second + ( direction.second * 3))) == (is_begin ? 2 : 1) &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 4), position.second + ( direction.second * 4))) == 0
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 3), position.second + ( direction.second * 3))) == (is_begin ? 1 : 2) &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 4), position.second + ( direction.second * 4))) == (is_begin ? 1 : 2) &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 5), position.second + ( direction.second * 5))) == 0
         )
         return true;
     return false;
@@ -219,8 +206,10 @@ bool MinMax::threeClose(std::pair<int, int> position, std::pair<int,int> directi
         position.second + (direction.second * 3 ) < 0)
         return false;
     if (
+        _bitboard->getBit(std::make_pair(position.first - direction.first, position.second - direction.second)) == (is_begin ? 2 : 1) &&
+        _bitboard->getBit(std::make_pair(position.first , position.second )) == (is_begin ? 1 : 2) &&
         pionNumberInDirection(position, direction) == 2 &&
-        _bitboard->getBit(std::make_pair(position.first , position.second )) == 0
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 3), position.second + (direction.second * 3))) == 0
         )
         return true;
     return false;
@@ -240,9 +229,10 @@ bool MinMax::threeOpen(std::pair<int, int> position, std::pair<int,int> directio
         position.second + (direction.second * 3) < 0)
         return false;
     if (
-        _bitboard->getBit(std::make_pair(position.first, position.second )) == 0 &&
-        pionNumberInDirection(position, direction) == 3 &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 4), position.second + (direction.second * 4))) == 0
+        _bitboard->getBit(std::make_pair(position.first - direction.first, position.second - direction.second)) == 0 &&
+        _bitboard->getBit(std::make_pair(position.first, position.second )) == (is_begin ? 1 : 2) &&
+        pionNumberInDirection(position, direction) == 2 &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 3), position.second + (direction.second * 3))) == 0
         )
         return true;
     return false;
@@ -255,25 +245,27 @@ bool MinMax::twoClose(std::pair<int, int> position, std::pair<int,int> direction
         (position.second - (direction.second) > _bitboard->getRowSize()) ||
         position.first - (direction.first) < 0 ||
         position.second - (direction.second) < 0)
-        return false;
+            return false;
     if (position.first + (direction.first * 3) >= (_bitboard->getRowSize()) ||
         (position.second + (direction.second * 3) >= _bitboard->getRowSize()) ||
         position.first + (direction.first * 3) < 0 ||
         position.second + (direction.second * 3) < 0)
-        return false;
+            return false;
+
     if (
+        _bitboard->getBit(std::make_pair(position.first - direction.first, position.second - direction.second)) == (is_begin ? 2 : 1) &&
         _bitboard->getBit(std::make_pair(position.first , position.second )) ==  (is_begin ? 1 : 2) &&
-        pionNumberInDirection(position, direction) == 2 &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 3), position.second + (direction.second * 3))) == 0
+        pionNumberInDirection(position, direction) == 1 &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 2), position.second + (direction.second * 2))) == 0
         )
-        return true;
+            return true;
 
     if (
         _bitboard->getBit(std::make_pair(position.first , position.second )) ==  0 &&
         pionNumberInDirection(position, direction) == 2 &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 3), position.second + (direction.second * 3))) == (is_begin ? 1 : 2) 
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 3), position.second + (direction.second * 3))) == (is_begin ? 2 : 1) 
         )
-        return true;
+            return true;
     return false;
 }
 
@@ -314,11 +306,12 @@ bool MinMax::threeJump(std::pair<int, int> position, std::pair<int,int> directio
         return false;
     if (
         _bitboard->getBit(std::make_pair(position.first - direction.first, position.second - direction.second)) == 0 &&
-        _bitboard->getBit(std::make_pair(position.first + direction.first, position.second + direction.second)) == 0 &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 2), position.second + (direction.second * 2))) == (is_begin ? 2 : 1) &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 3), position.second + (direction.second * 3))) == 0 &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 4), position.second + (direction.second * 4))) == (is_begin ? 2 : 1) &&
-        _bitboard->getBit(std::make_pair(position.first + (direction.first * 5), position.second + (direction.second * 5))) == 0
+        _bitboard->getBit(std::make_pair(position.first + direction.first, position.second + direction.second)) == (is_begin ? 1 : 2) &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 2), position.second + (direction.second * 2))) == 0 &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 3), position.second + (direction.second * 3))) == (is_begin ? 1 : 2) &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 4), position.second + (direction.second * 4))) == 0 &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 5), position.second + (direction.second * 5))) == (is_begin ? 1 : 2) &&
+        _bitboard->getBit(std::make_pair(position.first + (direction.first * 6), position.second + (direction.second * 6))) == 0
         )
         return true;
     return false;
@@ -329,29 +322,65 @@ int MinMax::evaluateCell(std::pair<int, int> position, std::pair<int,int> direct
 {
     int score = 0;
     if (fiveEnd(position, direction))
+    {
         score += -300000;
+        // std::cout << "fiveEnd" << std::endl;
+    }
     if (fourOpen(position, direction))
+    {
         score += 30000;
+        // std::cout << "fourOpen" << std::endl;
+    }
     if (fourClose(position, direction))
+    {
         score += 3000;
+        // std::cout << "fourClose" << std::endl;
+    }
     if (threeOpen(position, direction))
+    {
         score += 300;
+        // std::cout << "threeOpen" << std::endl;
+    }
     if (fourSplit(position, direction))
+    {
         score += 30;
+        // std::cout << "fourSplit" << std::endl;
+    }
     if (threeBlock(position, direction))
+    {
         score += 30;
+        // std::cout << "threeBlock" << std::endl;
+    }
     if (threeTwoOne(position, direction))
+    {
         score += 30;
+        // std::cout << "threeTwoOne" << std::endl;
+    }
     if (threeClose(position, direction))
+    {
         score += 30;
-    if (threeSplit(position, direction))
+        // std::cout << "threeClose" << std::endl;
+    }
+    if (threeTwoOneBlock(position, direction))
+    {
         score += 3;
+        // std::cout << "threeTwoOneBlock" << std::endl;
+    }
     if (threeJump(position, direction))
+    {
         score += 3;
+        // std::cout << "threeJump" << std::endl;
+    }
     if (twoOpen(position, direction))
+    {
         score += 2;
+        // std::cout << "twoOpen" << std::endl;
+    }
     if (twoClose(position, direction))
+    {
         score += 1;
+        // std::cout << "twoClose" << std::endl;
+    }
     return score;
 }
 
