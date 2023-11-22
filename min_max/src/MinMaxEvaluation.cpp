@@ -28,8 +28,10 @@ bool MinMax::fiveEnd(std::pair<int, int> position, std::pair<int,int> direction)
     if (
         _bitboard->getBit(std::make_pair(position.first , position.second)) == (is_begin ? 2 : 1) &&
         pionNumberInDirection(position, direction) == 4
-        )
+    ) {
+        std::cout << "Five !" << std::endl;
         return true;
+    }
     return false;
 }
 
@@ -327,13 +329,13 @@ int MinMax::evaluateCell(std::pair<int, int> position, std::pair<int,int> direct
 {
     int score = 0;
     if (fiveEnd(position, direction))
-        score +=  is_begin ? 300000000 : 3000000;
+        score += -300000;
     if (fourOpen(position, direction))
-        score +=   is_begin ? 300000 : 30000;
+        score += 30000;
     if (fourClose(position, direction))
-        score +=  is_begin ? 30000 : 3000;
+        score += 3000;
     if (threeOpen(position, direction))
-        score +=  is_begin ? 3000 : 300;
+        score += 300;
     if (fourSplit(position, direction))
         score += 30;
     if (threeBlock(position, direction))
