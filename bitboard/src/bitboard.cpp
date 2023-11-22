@@ -1,6 +1,10 @@
 #include "../includes/bitboard.hpp"
 
-Bitboard::Bitboard()  {}
+Bitboard::Bitboard()
+{
+    row_size_ = 0;
+}
+
 Bitboard::Bitboard(int size) : board_(size * size), size_(size * size), row_size_(size) {}
 
 void Bitboard::reSize(int size)
@@ -16,9 +20,7 @@ void Bitboard::reSize(int size)
 
 void Bitboard::setBit(std::pair<int, int> position, int color) {
     int index = position.first + position.second * row_size_;
-    std::cout << "Middle" << std::endl;
     board_[index].set(0, 1);
-    std::cout << "End" << std::endl;
     board_[index].set(1, color);
 }
 

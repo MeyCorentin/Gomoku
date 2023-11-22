@@ -40,18 +40,22 @@ int main() {
     Bitboard bitBoard;
     Render myRender(&bitBoard, &parser_);
 
-    myRender.createBoard(20);
 
     std::promise<void> exitSignal;
     std::future<void> futureObj = exitSignal.get_future();
     std::thread t1(readInput, &parser_, &bitBoard);
     std::thread t2(writeOutput, &brain_, &bitBoard);
 
-    while (!stop_bool) { //Todo fix segfault
+    while (!stop_bool) {
         myRender.refreshWindow();
         myRender.checkInputs();
-        myRender.updateBoard();
-        myRender.drawBoard();
+        if (myRender.boardIsCreate()) {
+            myRender.updateBoard();
+            myRender.drawBoard();
+        } else {
+            if (bitBoard.getRowSize() != 0)
+                myRender.createBoard(bitBoard.getRowSize());
+        }
     }
     
     t1.join();

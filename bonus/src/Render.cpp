@@ -7,6 +7,7 @@ Render::Render(Bitboard *board, Parser *parser)
     _bitboard = board;
     _parser = parser;
     _sizePiece = 0;
+    _boardCreated = false;
 }
 
 Render::~Render()
@@ -39,6 +40,7 @@ void Render::createBoard(int size)
         temp_board.push_back(temp_line);
     }
     _board = temp_board;
+    _boardCreated = true;
 }
 
 void Render::updateBoard()
@@ -84,28 +86,24 @@ void Render::closeWindow()
     _window.close();
 }
 
+bool Render::boardIsCreate()
+{
+    return _boardCreated;
+}
+
 void Render::checkInputs()
 {
     while (_window.pollEvent(_event)) {
         if (_event.type == sf::Event::Closed)
             this->closeWindow();
-        if (_event.type == sf::Event::MouseButtonReleased) {
-            if (_event.mouseButton.button == sf::Mouse::Left) {
-                sf::Vector2i mousePosition = sf::Mouse::getPosition(_window);
-                std::string turn = "TURN 3 3";
-                std::cout << "Before" << std::endl;
-                _parser->C_turn(*_bitboard, turn);
-                std::cout << "After" << std::endl;
+        if (_boardCreated) {
+            if (_event.type == sf::Event::MouseButtonReleased) {
+                if (_event.mouseButton.button == sf::Mouse::Left) {
+                    sf::Vector2i mousePosition = sf::Mouse::getPosition(_window);
+                    std::string turn = "TURN 3 3";
+                    _parser->C_turn(*_bitboard, turn);
+                }
             }
         }
-    }
-}
-
-void Render::loop()
-{
-    while (_window.isOpen()) {
-        this->refreshWindow();
-        this->checkInputs();
-        this->drawBoard();
     }
 }

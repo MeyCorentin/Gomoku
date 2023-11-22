@@ -21,6 +21,7 @@ class Render {
         int _sizeMarge;
         Bitboard *_bitboard;
         Parser *_parser;
+        bool _boardCreated;
 
     public:
         Render(Bitboard *board, Parser *parser);
@@ -28,9 +29,9 @@ class Render {
 
         void createBoard(int size);
         void drawBoard();
-        void loop();
         void refreshWindow();
         void closeWindow();
         void checkInputs();
         void updateBoard();
+        bool boardIsCreate();
 };
