@@ -275,7 +275,7 @@ std::pair<int, int> MinMax::playTurn()
 
         if (temp_minmax_1.evaluatePosition() >= temp_minmax_2.evaluatePosition())
         {
-        // std::cout << "ATTACK: " <<(double)temp_minmax_1.evaluatePosition()  << std::endl;
+            // std::cout << "ATTACK: " <<(double)temp_minmax_1.evaluatePosition()  << std::endl;
             evaluation_attack.push_back(node{(double)temp_minmax_1.evaluatePosition() +  recurseScore(temp_minmax_1, 0) / 4,(int)evaluation_defense.size() + 1, node_.position});
         }
         else

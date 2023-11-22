@@ -48,16 +48,16 @@ bool MinMax::fourClose(std::pair<int, int> position, std::pair<int,int> directio
     if (
         (position.first - (direction.first) >= (_bitboard->getRowSize()) ||
         (position.second - (direction.second) >= _bitboard->getRowSize()) ||
-        position.first - (direction.first) < 0 ||
-        position.second - (direction.second) < 0) &&
+        position.first - (direction.first) <= 0 ||
+        position.second - (direction.second) <= 0) &&
         pionNumberInDirection(position, direction) == 4 &&
         _bitboard->getBit(std::make_pair(position.first , position.second)) == 0
         )
         return true;
 
     if (
-        (position.first + (direction.first * 5) >= (_bitboard->getRowSize()) ||
-        (position.second + (direction.second * 5) >= _bitboard->getRowSize()) ||
+        (position.first + (direction.first * 5) > (_bitboard->getRowSize()) ||
+        (position.second + (direction.second * 5) > _bitboard->getRowSize()) ||
         position.first + (direction.first * 5) < 0 ||
         position.second + (direction.second * 5) < 0) &&
         pionNumberInDirection(position, direction) == 4 &&
@@ -65,8 +65,8 @@ bool MinMax::fourClose(std::pair<int, int> position, std::pair<int,int> directio
         )
         return true;
     if (
-        position.first - (direction.first) >= (_bitboard->getRowSize()) ||
-        (position.second - (direction.second) >= _bitboard->getRowSize()) ||
+        position.first - (direction.first) > (_bitboard->getRowSize()) ||
+        (position.second - (direction.second) > _bitboard->getRowSize()) ||
         position.first - (direction.first) < 0 ||
         position.second - (direction.second) < 0
         )
@@ -342,7 +342,7 @@ int MinMax::evaluateCell(std::pair<int, int> position, std::pair<int,int> direct
     if (fourClose(position, direction))
         score +=  is_begin ? 30000 : 3000;
     if (threeOpen(position, direction))
-        score += 300;
+        score +=  is_begin ? 3000 : 300;
     if (fourSplit(position, direction))
         score += 30;
     if (threeBlock(position, direction))
