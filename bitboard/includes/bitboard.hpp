@@ -6,10 +6,11 @@
 #pragma once
 
 class Bitboard {
-    int size_;
-    int row_size_;
 
     public:
+    int size_;
+    int row_size_;
+    int turn_played = 0;
     std::vector<std::bitset<2>> board_;
 
     Bitboard();
