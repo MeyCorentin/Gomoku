@@ -25,18 +25,9 @@ bool MinMax::fourOpen(std::pair<int, int> position, std::pair<int,int> direction
 
 bool MinMax::fiveEnd(std::pair<int, int> position, std::pair<int,int> direction)
 {
-    if (position.first - (direction.first) > (_bitboard->getRowSize()) ||
-        (position.second - (direction.second ) > _bitboard->getRowSize()) ||
-        position.first - (direction.first) < 0 ||
-        position.second - (direction.second) < 0)
-        return false;
-    if (position.first + (direction.first * 4) >= (_bitboard->getRowSize()) ||
-        (position.second + (direction.second * 4) >= _bitboard->getRowSize()) ||
-        position.first + (direction.first * 4) < 0 ||
-        position.second + (direction.second * 4) < 0)
-        return false;
     if (
-        pionNumberInDirection(position, direction) == 5
+        _bitboard->getBit(std::make_pair(position.first , position.second)) == (is_begin ? 2 : 1) &&
+        pionNumberInDirection(position, direction) == 4
         )
         return true;
     return false;
@@ -361,6 +352,7 @@ int MinMax::evaluateCell(std::pair<int, int> position, std::pair<int,int> direct
         score += 1;
     return score;
 }
+
 
 int MinMax::evaluatePosition()
 {
