@@ -45,25 +45,16 @@ bool MinMax::fiveEnd(std::pair<int, int> position, std::pair<int,int> direction)
 
 bool MinMax::fourClose(std::pair<int, int> position, std::pair<int,int> direction)
 {
-    if (
-        (position.first - (direction.first) >= (_bitboard->getRowSize()) ||
-        (position.second - (direction.second) >= _bitboard->getRowSize()) ||
+    if (position.first - (direction.first) > (_bitboard->getRowSize()) ||
+        (position.second - (direction.second) > _bitboard->getRowSize()) ||
         position.first - (direction.first) < 0 ||
-        position.second - (direction.second) < 0) &&
-        pionNumberInDirection(position, direction) == 4 &&
-        _bitboard->getBit(std::make_pair(position.first , position.second)) == 0
-        )
-        return true;
-
-    if (
-        (position.first + (direction.first * 5) >= (_bitboard->getRowSize()) ||
-        (position.second + (direction.second * 5) >= _bitboard->getRowSize()) ||
-        position.first + (direction.first * 5) < 0 ||
-        position.second + (direction.second * 5) < 0) &&
-        pionNumberInDirection(position, direction) == 4 &&
-        _bitboard->getBit(std::make_pair(position.first , position.second)) == 0
-        )
-        return true;
+        position.second - (direction.second) < 0)
+        return false;
+    if (position.first + (direction.first * 4) > (_bitboard->getRowSize()) ||
+        (position.second + (direction.second * 4) > _bitboard->getRowSize()) ||
+        position.first + (direction.first * 4) < 0 ||
+        position.second + (direction.second * 4) < 0)
+        return false;
     if (
         _bitboard->getBit(std::make_pair(position.first + (direction.first * 5), position.second + (direction.second * 5))) == (is_begin ? 1 : 2) &&
         pionNumberInDirection(position, direction) == 4 &&
@@ -316,6 +307,7 @@ bool MinMax::threeJump(std::pair<int, int> position, std::pair<int,int> directio
     return false;
 }
 
+//! TODO : FAIRE UNE LISTE AU LIEU DE INT
 int MinMax::evaluateCell(std::pair<int, int> position, std::pair<int,int> direction)
 {
     int score = 0;
