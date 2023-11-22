@@ -132,6 +132,7 @@ void Render::checkInputs()
                     if (distance < _sizePiece) {
                         (*piece_board).setFillColor(sf::Color({255,0,0,100}));
                         if (_event.type == sf::Event::MouseButtonReleased) {
+                            std::cout << "Player : " << std::to_string(j - 1) << "-" << std::to_string(i - 1) << std::endl;
                             if (_event.mouseButton.button == sf::Mouse::Left) {
                                 std::string turn = "TURN " + std::to_string(j - 1) + "," + std::to_string(i - 1); //Todo change by a ,
                                 _parser->C_turn(*_bitboard, turn);
