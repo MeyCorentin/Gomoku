@@ -60,12 +60,12 @@ void Render::createBoard(int size)
 void Render::updateBoard()
 {
     std::vector<sf::CircleShape> pieces;
-    for (int i = 0; i < _bitboard->getRowSize(); i++) {
-        for (int j = 0; j < _bitboard->getRowSize(); j++) {
-            int color = _bitboard->getBit(std::make_pair(j, i));
+    for (int y = 0; y < _bitboard->getRowSize(); y++) {
+        for (int x = 0; x < _bitboard->getRowSize(); x++) {
+            int color = _bitboard->getBit(std::make_pair(x, y));
             if (color != 0) {
                 sf::CircleShape piece(_sizePiece);
-                sf::Vector2f position = {(float)(((i) * (_sizeCase + 1)) - _sizePiece + _sizeMarge), (float)(((j) * (_sizeCase + 1) - _sizePiece + _sizeMarge))};
+                sf::Vector2f position = {(float)(((x) * (_sizeCase + 1)) - _sizePiece + _sizeMarge), (float)(((y) * (_sizeCase + 1) - _sizePiece + _sizeMarge))};
                 piece.setPosition(position);
                 if (color == 1)
                     piece.setFillColor(sf::Color::Black);
@@ -122,19 +122,19 @@ void Render::checkInputs()
             this->closeWindow();
         if (_boardCreated) {
             sf::Vector2i mousePosition = sf::Mouse::getPosition(_window);
-            int i = 1;
-            for (auto line = _boardCircle.begin(); line != _boardCircle.end(); line++, i++) {
-                int j = 1;
-                for (auto piece_board = (*line).begin(); piece_board != (*line).end(); piece_board++, j++) {
+            int x = 0;
+            for (auto line = _boardCircle.begin(); line != _boardCircle.end(); line++, x++) {
+                int y = 0;
+                for (auto piece_board = (*line).begin(); piece_board != (*line).end(); piece_board++, y++) {
                     sf::Vector2f position = (*piece_board).getPosition();
                     std::pair<float, float> center = {position.x + _sizePiece, position.y + _sizePiece};
                     float distance = std::sqrt(square(mousePosition.x - center.first) + square(mousePosition.y - center.second));
                     if (distance < _sizePiece) {
                         (*piece_board).setFillColor(sf::Color({255,0,0,100}));
                         if (_event.type == sf::Event::MouseButtonReleased) {
-                            std::cout << "Player : " << std::to_string(j - 1) << "-" << std::to_string(i - 1) << std::endl;
+                            std::cout << "Player : " << std::to_string(x) << "-" << std::to_string(y) << std::endl;
                             if (_event.mouseButton.button == sf::Mouse::Left) {
-                                std::string turn = "TURN " + std::to_string(j - 1) + "," + std::to_string(i - 1); //Todo change by a ,
+                                std::string turn = "TURN " + std::to_string(x) + "," + std::to_string(y); //Todo change by a ,
                                 _parser->C_turn(*_bitboard, turn);
                             }
                         }
