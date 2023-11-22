@@ -2,6 +2,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <cmath>
 
 #pragma once
 
@@ -11,6 +12,7 @@
 class Render {
     private:
         std::vector<std::vector<sf::RectangleShape>> _board;
+        std::vector<std::vector<sf::CircleShape>> _boardCircle;
         std::vector<sf::CircleShape> _pieces;
         sf::Event _event;
         sf::RenderWindow _window;
@@ -34,4 +36,5 @@ class Render {
         void checkInputs();
         void updateBoard();
         bool boardIsCreate();
+        int square(int nb);
 };

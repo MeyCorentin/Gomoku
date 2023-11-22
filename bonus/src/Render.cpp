@@ -18,6 +18,7 @@ Render::~Render()
 void Render::createBoard(int size)
 {
     std::vector<std::vector<sf::RectangleShape>> temp_board;
+    std::vector<std::vector<sf::CircleShape>> temp_boardCircle;
 
     size -= 1;
 
@@ -30,7 +31,7 @@ void Render::createBoard(int size)
         for (int j = 0; j < size; j++) {
             sf::RectangleShape rectangle(sf::Vector2f(_sizeCase, _sizeCase));
             sf::Vector2f position = {(float)(i * (_sizeCase + 1) + _sizeMarge), (float)(j * (_sizeCase + 1) + _sizeMarge)};
-            sf::Color color = {201,150,60,100};
+            sf::Color color = {201,150,60,255};
             rectangle.setPosition(position);
             rectangle.setFillColor(color);
             rectangle.setOutlineThickness(1.f);
@@ -39,7 +40,20 @@ void Render::createBoard(int size)
         }
         temp_board.push_back(temp_line);
     }
+    for (int i = 0; i < size + 1; i++) {
+        std::vector<sf::CircleShape> temp_lineCircle;
+        for (int j = 0; j < size + 1; j++) {
+            sf::CircleShape circle(_sizePiece);
+            sf::Vector2f positionPiece = {(float)(i * (_sizeCase + 1)), (float)(j * (_sizeCase + 1))};
+            sf::Color colorPiece = {255,0,0,0};
+            circle.setPosition(positionPiece);
+            circle.setFillColor(colorPiece);
+            temp_lineCircle.push_back(circle);
+        }
+        temp_boardCircle.push_back(temp_lineCircle);
+    }
     _board = temp_board;
+    _boardCircle = temp_boardCircle;
     _boardCreated = true;
 }
 
@@ -71,6 +85,11 @@ void Render::drawBoard()
             _window.draw(*case_board);
         }
     }
+    for (auto line = _boardCircle.begin(); line != _boardCircle.end(); line++) {
+        for (auto piece_board = (*line).begin(); piece_board != (*line).end(); piece_board++) {
+            _window.draw(*piece_board);
+        }
+    }
     for (auto piece = _pieces.begin(); piece != _pieces.end(); piece++)
         _window.draw(*piece);
     _window.display();
@@ -91,17 +110,35 @@ bool Render::boardIsCreate()
     return _boardCreated;
 }
 
+int Render::square(int nb)
+{
+    return nb * nb;
+}
+
 void Render::checkInputs()
 {
     while (_window.pollEvent(_event)) {
         if (_event.type == sf::Event::Closed)
             this->closeWindow();
         if (_boardCreated) {
-            if (_event.type == sf::Event::MouseButtonReleased) {
-                if (_event.mouseButton.button == sf::Mouse::Left) {
-                    sf::Vector2i mousePosition = sf::Mouse::getPosition(_window);
-                    std::string turn = "TURN 3 3";
-                    _parser->C_turn(*_bitboard, turn);
+            sf::Vector2i mousePosition = sf::Mouse::getPosition(_window);
+            int i = 1;
+            for (auto line = _boardCircle.begin(); line != _boardCircle.end(); line++, i++) {
+                int j = 1;
+                for (auto piece_board = (*line).begin(); piece_board != (*line).end(); piece_board++, j++) {
+                    sf::Vector2f position = (*piece_board).getPosition();
+                    std::pair<float, float> center = {position.x + _sizePiece, position.y + _sizePiece};
+                    float distance = std::sqrt(square(mousePosition.x - center.first) + square(mousePosition.y - center.second));
+                    if (distance < _sizePiece) {
+                        (*piece_board).setFillColor(sf::Color({255,0,0,100}));
+                        if (_event.type == sf::Event::MouseButtonReleased) {
+                            if (_event.mouseButton.button == sf::Mouse::Left) {
+                                std::string turn = "TURN " + std::to_string(j) + " " + std::to_string(i); //Todo change by a ,
+                                _parser->C_turn(*_bitboard, turn);
+                            }
+                        }
+                    } else
+                        (*piece_board).setFillColor(sf::Color({255,0,0,0}));
                 }
             }
         }
