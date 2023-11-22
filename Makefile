@@ -9,7 +9,7 @@ ifeq ($(OS),Windows_NT)
 	CXX = x86_64-w64-mingw32-g++
 	EXE = .exe
 	CXXFLAGS = -std=c++20
-	RM = del
+	RM = rm -fR
 else
 	CXX = g++
 	EXE =
