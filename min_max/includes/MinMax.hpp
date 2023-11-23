@@ -10,7 +10,7 @@
 
 struct node
 {
-    int score;
+    float score;
     int i;
     std::pair<int, int> position;
     bool operator==(const node& other) const {
@@ -37,9 +37,9 @@ class MinMax {
         int spaceFree(std::pair<int, int> position, std::pair<int,int> direction);
         int getMaxDepth(int size);
         std::pair<int, int> nodeToPosition(node my_node);
-        int evaluatePosition();
+        float evaluatePosition();
         bool fourOpen(std::pair<int, int> position, std::pair<int,int> direction);
-        int evaluateCell(std::pair<int, int> position, std::pair<int,int> direction);
+        float evaluateCell(std::pair<int, int> position, std::pair<int,int> direction);
         bool fourClose(std::pair<int, int> position, std::pair<int,int> direction);
         bool threeOpen(std::pair<int, int> position, std::pair<int,int> direction);
         bool twoOpen(std::pair<int, int> position, std::pair<int,int> direction);
