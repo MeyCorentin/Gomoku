@@ -1,0 +1,16 @@
+-------------------------------------
+2023-11-23  7:56 PM - 7:56 PM
+Time for turn: 5 s,   Time for match: 180 s
+Tolerance: 5 s,   Memory: 80 MB
+Openings: start from 10, used 1, available 41
+Rule: five or more stones wins
+Opening CRC: 837bb15f
+Games played: 0  (0%)
+-------------------------------------
+
+gomoku-ai
+wins: 0=0+0,   losses: 0=0+0
+
+gomoku-ai
+wins: 0=0+0,   losses: 0=0+0
+

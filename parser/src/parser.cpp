@@ -18,6 +18,7 @@ void Parser::Compute(Bitboard &arg_board, std::string &arg_input)
     }
     if (arg_input.substr(0, 5) == "START") {
         C_start(arg_board, arg_input);
+         std::cout << "OK" << std::endl;
         return;
     }
     if (arg_input.substr(0, 5) == "BEGIN") {
