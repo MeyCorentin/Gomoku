@@ -56,6 +56,8 @@ class MinMax {
         int currentLineNumber(std::pair<int, int> position, std::pair<int,int> direction);
         int endInDiretion(std::pair<int, int> position, std::pair<int,int> direction);
         bool threeOpenBig(std::pair<int, int> position, std::pair<int,int> direction);
+        bool doubleThreeOpen(std::pair<int, int> position, std::pair<int,int> direction);
+        bool fiveSplit(std::pair<int, int> position, std::pair<int,int> direction);
         bool is_begin = false;
     private:
             Bitboard *_bitboard;

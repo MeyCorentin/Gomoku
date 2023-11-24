@@ -251,6 +251,11 @@ std::pair<int, int> MinMax::playTurn()
 
         evaluation_attack.push_back(node{temp_minmax_1.evaluatePosition(), (int)evaluation_attack.size() + 1, node_.position});
         evaluation_defense.push_back(node{temp_minmax_2.evaluatePosition(), (int)evaluation_defense.size() + 1, node_.position});
+        // std::cout << "----------" << std::endl;
+        // temp_minmax_1._bitboard->displayBoard();
+        // std::cout << "---" << std::endl;
+        // temp_minmax_2._bitboard->displayBoard();
+        // std::cout << temp_minmax_1.evaluatePosition() << " vs " << temp_minmax_2.evaluatePosition()<< std::endl;
     }
     auto max_eval_attack = std::max_element(evaluation_attack.begin(), evaluation_attack.end(), [](const node& a, const node& b) {
         return a.score < b.score;
