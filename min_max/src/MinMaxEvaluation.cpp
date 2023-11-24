@@ -2,7 +2,7 @@
 
 bool MinMax::fiveEnd(std::pair<int, int> position, std::pair<int,int> direction)
 {
-    if ( 
+    if (
         pionNumberInDirection(position, direction) == 5
     ) {
         return true;
@@ -316,56 +316,56 @@ bool MinMax::threeJump(std::pair<int, int> position, std::pair<int,int> directio
 }
 float MinMax::evaluateCell(std::pair<int, int> position, std::pair<int,int> direction)
 {
-   float score = 0.0f;
-   if (fiveEnd(position, direction))
-   {
-       score += 1.0f;
-   }
-   if (fourOpen(position, direction))
-   {
-       score += 0.5f;
-   }
-   if (fourClose(position, direction))
-   {
-       score += 0.03f;
-   }
-   if (threeOpen(position, direction))
-   {
-       score += 0.005f;
-   }
-   if (fourSplit(position, direction))
-   {
-       score += 0.005f;
-   }
-   if (threeClose(position, direction))
-   {
-       score += 0.003f;
-   }
-   if (threeBlock(position, direction))
-   {
-       score += 0.0003f;
-   }
-   if (threeTwoOne(position, direction))
-   {
-       score += 0.0003f;
-   }
-   if (threeTwoOneBlock(position, direction))
-   {
-       score += 0.00003f;
-   }
-   if (threeJump(position, direction))
-   {
-       score += 0.00003f;
-   }
-   if (twoOpen(position, direction))
-   {
-       score += 0.00002f;
-   }
-   if (twoClose(position, direction))
-   {
-       score += 0.0001f;
-   }
-   return score;
+    float score = 0.0f;
+    if (fiveEnd(position, direction))
+    {
+        score += 1.0f;
+    }
+    if (fourOpen(position, direction))
+    {
+        score += 0.005f;
+    }
+    if (fourClose(position, direction))
+    {
+        score += 0.0003f;
+    }
+    if (threeOpen(position, direction))
+    {
+        score += 0.00005f;
+    }
+    if (fourSplit(position, direction))
+    {
+        score += 0.00005f;
+    }
+    if (threeClose(position, direction))
+    {
+        score += 0.00003f;
+    }
+    if (threeBlock(position, direction))
+    {
+        score += 0.000003f;
+    }
+    if (threeTwoOne(position, direction))
+    {
+        score += 0.000003f;
+    }
+    if (threeTwoOneBlock(position, direction))
+    {
+        score += 0.0000003f;
+    }
+    if (threeJump(position, direction))
+    {
+        score += 0.00003f;
+    }
+    if (twoOpen(position, direction))
+    {
+        score += 0.00002f;
+    }
+    if (twoClose(position, direction))
+    {
+        score += 0.0001f;
+    }
+    return score;
 }
 
 float MinMax::evaluatePosition()
@@ -395,7 +395,6 @@ float MinMax::evaluatePosition()
         score += evaluateCell(position, std::make_pair(1,1)); //Bottom Right
 
         score += evaluateCell(position, std::make_pair(-1,1)); //Bottom Left
-
        }
    }
    return score;

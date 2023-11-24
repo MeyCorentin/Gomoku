@@ -41,7 +41,6 @@ node MinMax::findBestMove()
         {
             _scores_defense.erase(it);
         }
-        result_defense.score = 0;
         return result_defense;
     }
     auto it = std::find(_scores_attack.begin(), _scores_attack.end(), result_attack);
@@ -49,7 +48,6 @@ node MinMax::findBestMove()
     {
         _scores_attack.erase(it);
     }
-    result_attack.score = 0;
     return result_attack;
 }
 
@@ -216,8 +214,6 @@ void MinMax::getScoreInMap()
     for (y_size = 0; y_size < _bitboard->getRowSize();y_size++) {
         for (x_size = 0; x_size < _bitboard->getRowSize(); x_size++)
         {
-            if (_bitboard->getBit(std::make_pair(x_size, y_size)) != 0)
-                continue;
             _scores_defense.push_back(node{(float)updateScore(std::make_pair(x_size, y_size), false), (int)_scores_defense.size() + 1,std::make_pair(x_size, y_size)});
             _scores_attack.push_back(node{(float)updateScore(std::make_pair(x_size, y_size), true), (int)_scores_attack.size() + 1,std::make_pair(x_size, y_size)});
         }
@@ -239,7 +235,6 @@ std::pair<int, int> MinMax::playTurn()
     std::vector<node> evaluation_attack;
     for (int k = 0; k != countSpaceFree(); k++)
         result.push_back(findBestMove());
-
     for (auto& node_ : result)
     {
         Bitboard temp_board_1(*_bitboard);
@@ -263,16 +258,24 @@ std::pair<int, int> MinMax::playTurn()
         return a.score < b.score;
     });
 
-    if (is_begin)
+    if (!is_begin)
     {
-        if (evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score >= evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score)
+        if (evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score >= 1)
             return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].position;
-        else
+        if (evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score >= 1)
             return evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].position;
-    } else {
         if (evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score >= evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score)
             return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].position;
         else
             return evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].position;
     }
+    if (evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score >= 1)
+        return evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].position;
+    if (evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score >= 1)
+        return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].position;
+    if (evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].score >= evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].score)
+        return evaluation_defense[std::distance(evaluation_defense.begin(), max_eval_defense)].position;
+    else
+        return evaluation_attack[std::distance(evaluation_attack.begin(), max_eval_attack)].position;
+
 }
