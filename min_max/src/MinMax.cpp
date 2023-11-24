@@ -237,6 +237,8 @@ std::pair<int, int> MinMax::playTurn()
         result.push_back(findBestMove());
     for (auto& node_ : result)
     {
+        if (_bitboard->getBit(node_.position) != 0)
+            continue;
         Bitboard temp_board_1(*_bitboard);
         MinMax temp_minmax_1(&temp_board_1);
         temp_minmax_1.is_begin = is_begin;
