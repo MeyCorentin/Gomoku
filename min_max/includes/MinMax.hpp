@@ -28,7 +28,8 @@ class MinMax {
         node findBestMove();
         void getScoreInMap();
         void displayScore();
-
+        
+        int countSpaceFree();
         int updateScore(std::pair<int, int> position, bool attack);
         std::pair<int,int> playTurn();
         double recurseScore(double score_, int depth, std::pair<int, int> position, std::pair<int, int> direction, bool attack);
@@ -52,7 +53,9 @@ class MinMax {
         std::pair<int, int> depthMinMax(int depth, MinMax min_max, bool attack);
         bool fiveEnd(std::pair<int, int> position, std::pair<int,int> direction);
         bool twoClose(std::pair<int, int> position, std::pair<int,int> direction);
-        int recurseScore(MinMax current_min_max, int deepth);
+        int currentLineNumber(std::pair<int, int> position, std::pair<int,int> direction);
+        int endInDiretion(std::pair<int, int> position, std::pair<int,int> direction);
+        bool threeOpenBig(std::pair<int, int> position, std::pair<int,int> direction);
         bool is_begin = false;
     private:
             Bitboard *_bitboard;

@@ -41,6 +41,7 @@ node MinMax::findBestMove()
         {
             _scores_defense.erase(it);
         }
+        result_defense.score = 0;
         return result_defense;
     }
     auto it = std::find(_scores_attack.begin(), _scores_attack.end(), result_attack);
@@ -48,6 +49,7 @@ node MinMax::findBestMove()
     {
         _scores_attack.erase(it);
     }
+    result_attack.score = 0;
     return result_attack;
 }
 
@@ -98,8 +100,29 @@ int MinMax::pionNumberInDirection(std::pair<int, int> position, std::pair<int,in
     if (color != (is_begin ? 1 : 2))
         return 0;
     else
+    {
         return (1 + pionNumberInDirection(position, direction));
+    }
 
+}
+
+
+int MinMax::endInDiretion(std::pair<int, int> position, std::pair<int,int> direction)
+{
+    position.first += direction.first;
+    position.second += direction.second;
+    int color = _bitboard->getBit(position);
+    if (color == (is_begin ? 1 : 2))
+        return (currentLineNumber(position, direction));
+    return  color;
+}
+
+
+int MinMax::currentLineNumber(std::pair<int, int> position, std::pair<int,int> direction)
+{
+    int pion_number = pionNumberInDirection(position, std::make_pair(-direction.first, -direction.second)) +  pionNumberInDirection(position, std::make_pair(direction.first, direction.second));;
+
+    return  pion_number;
 }
 
 int MinMax::maxPossibleLine(std::pair<int, int> position, std::pair<int,int> direction, bool attack)
@@ -107,6 +130,24 @@ int MinMax::maxPossibleLine(std::pair<int, int> position, std::pair<int,int> dir
     int pion_number = pionNumberInDirection(position, std::make_pair(-direction.first, -direction.second));
     int space_free = spaceFree(position, direction);
     return pion_number + space_free;
+}
+
+
+int MinMax::countSpaceFree()
+{
+    std::vector<std::bitset<2>> board_ = _bitboard->getBitboard();
+    int x_size = 0;
+    int y_size = 0;
+    int count = 0;
+    for (y_size = 0; y_size < _bitboard->getRowSize();y_size++) {
+        for (x_size = 0; x_size < _bitboard->getRowSize(); x_size++)
+        {
+            if (_bitboard->getBit(std::make_pair(x_size, y_size)) == 0)
+                count++;
+
+        }
+    }
+    return count;
 }
 
 int MinMax::updateScore(std::pair<int, int> position, bool attack)
@@ -175,6 +216,8 @@ void MinMax::getScoreInMap()
     for (y_size = 0; y_size < _bitboard->getRowSize();y_size++) {
         for (x_size = 0; x_size < _bitboard->getRowSize(); x_size++)
         {
+            if (_bitboard->getBit(std::make_pair(x_size, y_size)) != 0)
+                continue;
             _scores_defense.push_back(node{(float)updateScore(std::make_pair(x_size, y_size), false), (int)_scores_defense.size() + 1,std::make_pair(x_size, y_size)});
             _scores_attack.push_back(node{(float)updateScore(std::make_pair(x_size, y_size), true), (int)_scores_attack.size() + 1,std::make_pair(x_size, y_size)});
         }
@@ -194,7 +237,7 @@ std::pair<int, int> MinMax::playTurn()
     std::vector<node> result;
     std::vector<node> evaluation_defense;
     std::vector<node> evaluation_attack;
-    for (int k = 0; k != 10; k++)
+    for (int k = 0; k != countSpaceFree(); k++)
         result.push_back(findBestMove());
 
     for (auto& node_ : result)
@@ -218,14 +261,6 @@ std::pair<int, int> MinMax::playTurn()
 
     auto max_eval_defense = std::max_element(evaluation_defense.begin(), evaluation_defense.end(), [](const node& a, const node& b) {
         return a.score < b.score;
-    });
-
-    auto min_eval_attack = std::max_element(evaluation_attack.begin(), evaluation_attack.end(), [](const node& a, const node& b) {
-        return a.score > b.score;
-    });
-
-    auto min_eval_defense = std::max_element(evaluation_defense.begin(), evaluation_defense.end(), [](const node& a, const node& b) {
-        return a.score > b.score;
     });
 
     if (is_begin)
