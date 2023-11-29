@@ -39,7 +39,6 @@ class MinMax {
         int pionNumberInDirection(std::pair<int, int> position, std::pair<int,int> direction);
         int spaceFree(std::pair<int, int> position, std::pair<int,int> direction);
         int getMaxDepth(int size);
-        std::pair<int, int> nodeToPosition(node my_node);
         float evaluatePosition();
         bool fourOpen(std::pair<int, int> position, std::pair<int,int> direction);
         float evaluateCell(std::pair<int, int> position, std::pair<int,int> direction);
