@@ -19,7 +19,6 @@ endif
 
 src = main.cpp \
       bitboard/src/bitboard.cpp \
-      brain/src/brain.cpp \
       min_max/src/MinMax.cpp \
       parser/src/parser.cpp \
       parser/src/commandes/board.cpp \
@@ -33,7 +32,6 @@ src = main.cpp \
 bonus_src = bonus/src/main.cpp \
 			bonus/src/Render.cpp	\
 			bitboard/src/bitboard.cpp \
-			brain/src/brain.cpp \
 			min_max/src/MinMax.cpp \
 			parser/src/parser.cpp \
 			parser/src/commandes/board.cpp \

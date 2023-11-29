@@ -3,6 +3,8 @@
 #include <cmath>
 #include <algorithm>
 #include <vector>
+#include <map>
+#include <functional>
 
 #pragma once
 

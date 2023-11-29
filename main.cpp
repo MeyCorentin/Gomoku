@@ -6,7 +6,6 @@
 
 #include "min_max/includes/MinMax.hpp"
 #include "parser/includes/parser.hpp"
-#include "brain/includes/brain.hpp"
 
 std::mutex IO_MUTEX;
 std::string input;
@@ -24,27 +23,9 @@ void readInput(Parser *arg_parser, Bitboard *board_) {
     }
 }
 
-void writeOutput(Brain *arg_brain, Bitboard *board_) {
-    while (!stop_bool) {
-        IO_MUTEX.lock();
-        arg_brain->Compute(*board_, input);
-        IO_MUTEX.unlock();
-    }
-}
-
 int main() {
-
     Parser parser_;
-    Brain brain_;
     Bitboard bitBoard;
-
-    std::promise<void> exitSignal;
-    std::future<void> futureObj = exitSignal.get_future();
-    std::thread t1(readInput, &parser_, &bitBoard);
-    std::thread t2(writeOutput, &brain_, &bitBoard);
-
-    t1.join();
-    t2.join();
-
+    readInput(&parser_, &bitBoard);
     return 0;
 }

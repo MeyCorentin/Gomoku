@@ -345,7 +345,6 @@ bool MinMax::twoOpen(std::pair<int, int> position, std::pair<int,int> direction)
 
 bool MinMax::threeJump(std::pair<int, int> position, std::pair<int,int> direction)
 {
-
     if (position.first - (direction.first) >= (_bitboard->getRowSize()) ||
         (position.second - (direction.second) >= _bitboard->getRowSize()) ||
         position.first - (direction.first) < 0 ||
@@ -368,92 +367,60 @@ bool MinMax::threeJump(std::pair<int, int> position, std::pair<int,int> directio
         return true;
     return false;
 }
+
 float MinMax::evaluateCell(std::pair<int, int> position, std::pair<int,int> direction)
 {
     float score = 0.0f;
     if (fiveEnd(position, direction))
-    {
         score += 10000.0f;
-    }
     if (fourOpen(position, direction))
-    {
         score += 1.0f;
-    }
     if (fiveSplit(position, direction))
-    {
         score += 0.1f;
-    }
     if (threeOpen(position, direction))
-    {
         score += 0.1f;
-    }
     if (fourClose(position, direction))
-    {
         score += 0.1f;
-    }
     if (threeTwoOne(position, direction))
-    {
         score += 0.1f;
-    }
     if (fourSplit(position, direction))
-    {
         score += 0.00005f;
-    }
     if (threeClose(position, direction))
-    {
         score += 0.000003f;
-    }
     if (threeBlock(position, direction))
-    {
         score += 0.00005f;
-    }
     if (threeTwoOneBlock(position, direction))
-    {
         score += 0.0000003f;
-    }
     if (threeJump(position, direction))
-    {
         score += 0.00003f;
-    }
     if (twoOpen(position, direction))
-    {
         score += 0.000002f;
-    }
     if (twoClose(position, direction))
-    {
         score += 0.00001f;
-    }
     return score;
 }
 
 float MinMax::evaluatePosition()
 {
-   float score = 0.0f;
+    float score = 0.0f;
 
-   std::vector<std::bitset<2>> board_ = _bitboard->getBitboard();
-   int x_size = 0;
-   int y_size = 0;
-   std::pair<int, int> position;
-   for (y_size = 0; y_size < _bitboard->getRowSize();y_size++) {
-       for (x_size = 0; x_size < _bitboard->getRowSize(); x_size++)
-       {
-        position = std::make_pair(x_size, y_size);
-        score += evaluateCell(position, std::make_pair(-1,0)); //Leftx
-
-        score += evaluateCell(position, std::make_pair(0,-1)); //Top
-
-        score += evaluateCell(position, std::make_pair(1,0)); //Right
-
-        score += evaluateCell(position, std::make_pair(0,1)); //Bottom
-
-        score += evaluateCell(position, std::make_pair(-1,-1)); //Top Left
-
-        score += evaluateCell(position, std::make_pair(1,-1)); //Top Right
-
-        score += evaluateCell(position, std::make_pair(1,1)); //Bottom Right
-
-        score += evaluateCell(position, std::make_pair(-1,1)); //Bottom Left
-       }
-   }
-   return score;
+    std::vector<std::bitset<2>> board_ = _bitboard->getBitboard();
+    int x_size = 0;
+    int y_size = 0;
+    std::pair<int, int> position;
+    for (y_size = 0; y_size < _bitboard->getRowSize();y_size++) {
+        for (x_size = 0; x_size < _bitboard->getRowSize(); x_size++)
+        {
+            position = std::make_pair(x_size, y_size);
+            score += evaluateCell(position, std::make_pair(-1,0)); //Left
+            score += evaluateCell(position, std::make_pair(0,-1)); //Top
+            score += evaluateCell(position, std::make_pair(1,0)); //Right
+            score += evaluateCell(position, std::make_pair(0,1)); //Bottom
+            score += evaluateCell(position, std::make_pair(-1,-1)); //Top Left
+            score += evaluateCell(position, std::make_pair(1,-1)); //Top Right
+            score += evaluateCell(position, std::make_pair(1,1)); //Bottom Right
+            score += evaluateCell(position, std::make_pair(-1,1)); //Bottom Left
+        }
+    }
+    return score;
 }

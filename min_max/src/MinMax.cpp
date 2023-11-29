@@ -156,7 +156,7 @@ int MinMax::updateScore(std::pair<int, int> position, bool attack)
         return 0;
     int max_possible = 0;
     max_possible = maxPossibleLine(position, std::make_pair(-1,0), attack);
-    score += recurseScore(0, depth, position, std::make_pair(-1,0), attack) -5 + max_possible; //Leftx
+    score += recurseScore(0, depth, position, std::make_pair(-1,0), attack) -5 + max_possible; //Left
 
     max_possible = maxPossibleLine(position, std::make_pair(0,-1), attack);
     score += recurseScore(0, depth, position, std::make_pair(0,-1), attack) -5 + max_possible; //Top
@@ -251,11 +251,6 @@ std::pair<int, int> MinMax::playTurn()
 
         evaluation_attack.push_back(node{temp_minmax_1.evaluatePosition(), (int)evaluation_attack.size() + 1, node_.position});
         evaluation_defense.push_back(node{temp_minmax_2.evaluatePosition(), (int)evaluation_defense.size() + 1, node_.position});
-        // std::cout << "----------" << std::endl;
-        // temp_minmax_1._bitboard->displayBoard();
-        // std::cout << "---" << std::endl;
-        // temp_minmax_2._bitboard->displayBoard();
-        // std::cout << temp_minmax_1.evaluatePosition() << " vs " << temp_minmax_2.evaluatePosition()<< std::endl;
     }
     auto max_eval_attack = std::max_element(evaluation_attack.begin(), evaluation_attack.end(), [](const node& a, const node& b) {
         return a.score < b.score;
